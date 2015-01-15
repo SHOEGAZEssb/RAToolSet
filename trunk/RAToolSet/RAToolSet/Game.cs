@@ -51,6 +51,6 @@ namespace RAToolSet
       _consoleName = consoleName;
     }
 
-    
+
   }
 }
