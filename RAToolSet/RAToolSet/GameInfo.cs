@@ -7,7 +7,7 @@ namespace RAToolSet
     int _id;
     string _title;
     int _consoleID;
-    int _forumTopicID;   
+    int _forumTopicID;
     string _flags; //??
     string _imageIcon;
     string _imageTitle;
@@ -33,13 +33,19 @@ namespace RAToolSet
       }
     }
 
+    public int ConsoleID
+    {
+      get { return _consoleID; }
+      private set { _consoleID = value; }
+    }
+
     public GameInfo(int id, string title, int consoleID, int forumTopicID, string flags, string imageIcon, string imageTitle, string imageIngame, string imageBoxArt,
                     string publisher, string developer, string genre, string released, int isFinal, string consoleName, string richPresencePatch,
                     int numAchievements, int numDistinctPlayersCasual, int numDistinctPlayersHardcore)
     {
       _id = id;
       _title = title;
-      _consoleID = consoleID;
+      ConsoleID = consoleID;
       _forumTopicID = forumTopicID;
       _flags = flags;
       _imageIcon = imageIcon;

@@ -45,7 +45,6 @@ namespace RAToolSet
       prc.StartInfo = info;
       prc.Start();
 
-      
       string[] returnString = prc.StandardOutput.ReadToEnd().Split('|');
       return returnString;
     }
@@ -68,7 +67,7 @@ namespace RAToolSet
     private void GetGameList(int consoleID)
     {
       string[] arr = GetSplittedProcessOutput(@"..\..\..\..\GetGameList.exe", consoleID.ToString());
-      List<Game> list = GetGameListByConsoleID(consoleID);
+      List<Game> list = _gameList[consoleID];
 
       for (int i = 0; i < arr.Length / 4; i++)
       {
@@ -91,7 +90,7 @@ namespace RAToolSet
     // gets the GameInfo for all games of the given console
     private void getgameInfoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
-      List<Game> list = GetGameListByConsoleID((int)e.Argument);
+      List<Game> list = _gameList[(int)e.Argument];
 
       string gameIDString = "";
 
@@ -111,67 +110,77 @@ namespace RAToolSet
         progressBar1.Value = 0;
       }));
 
-      foreach (string id in gameIDs)
+      string[] arr = GetSplittedProcessOutput(@"..\..\..\..\GetGameInfoExtended.exe", gameIDString);
+
+      for (int f = 0; f < arr.Length / 19; f++)
       {
-        string[] arr = GetSplittedProcessOutput(@"..\..\..\..\GetGameInfoExtended.exe", id);
+        GameInfo gameInfo = new GameInfo(StringToInt(arr[(19 * f)]), arr[(19 * f) + 1], StringToInt(arr[(19 * f) + 2]), StringToInt(arr[(19 * f) + 3]),
+                                          arr[(19 * f) + 4], arr[(19 * f) + 5], arr[(19 * f) + 6], arr[(19 * f) + 7], arr[(19 * f) + 8], arr[(19 * f) + 9],
+                                          arr[(19 * f) + 10], arr[(19 * f) + 11], arr[(19 * f) + 12], StringToInt(arr[(19 * f) + 13]), arr[(19 * f) + 14],
+                                          arr[(19 * f) + 15], StringToInt(arr[(19 * f) + 16]), StringToInt(arr[(19 * f) + 17]), StringToInt(arr[(19 * f) + 18]));
 
-
-        for (int f = 0; f < arr.Length / 19; f++)
-        {
-          GameInfo gameInfo = new GameInfo(StringToInt(arr[(19 * f)]), arr[(19 * f) + 1], StringToInt(arr[(19 * f) + 2]), StringToInt(arr[(19 * f) + 3]),
-                                            arr[(19 * f) + 4], arr[(19 * f) + 5], arr[(19 * f) + 6], arr[(19 * f) + 7], arr[(19 * f) + 8], arr[(19 * f) + 9],
-                                            arr[(19 * f) + 10], arr[(19 * f) + 11], arr[(19 * f) + 12], StringToInt(arr[(19 * f) + 13]), arr[(19 * f) + 14],
-                                            arr[(19 * f) + 15], StringToInt(arr[(19 * f) + 16]), StringToInt(arr[(19 * f) + 17]), StringToInt(arr[(19 * f) + 18]));
-
-          AddGameInfoToGame(gameInfo, list);
-
-          Invoke(new Action(() =>
-          {
-            //label1.Text = "gameboy gameinfo fetched";
-            progressBar1.Value++;
-            label2.Text = progressBar1.Value + " / " + progressBar1.Maximum;
-          }));
-
-          //for(int b = 19*f + 19; arr[b] != "AchievementSectionEnd"; b++)
-          //{
-
-          //}
-        }
+        AddGameInfoToGame(gameInfo, GetGameByID(int.Parse(gameIDs[f])));
 
         Invoke(new Action(() =>
         {
           //label1.Text = "gameboy gameinfo fetched";
-          foreach (Game g in list)
-          {
-            comboBox1.Items.Add(g.Title);
-          }
+          progressBar1.Value++;
+          label2.Text = progressBar1.Value + " / " + progressBar1.Maximum;
         }));
       }
 
-
+      Invoke(new Action(() =>
+      {
+        label1.Text = "gameboy gameinfo fetched";
+        foreach (Game g in list)
+        {
+          comboBox1.Items.Add(g.Title);
+        }
+      }));
     }
 
-    private void AddGameInfoToGame(GameInfo info, List<Game> list)
+
+    private Game GetGameByID(int gameID)
     {
-      list.Where<Game>(i => i.ID == info.ID).FirstOrDefault().GameInfo = info;
+      return GetFullGameList().Where<Game>(i => i.ID == gameID).FirstOrDefault();
     }
 
-    private void AddGameInfoToGame(GameInfo info, Game game)
+    /// <summary>
+    /// Combines all game lists from all consoles into one.
+    /// </summary>
+    /// <returns>Full game list</returns>
+    private List<Game> GetFullGameList()
     {
-      game.GameInfo = info;
+      List<Game> fullList = new List<Game>();
+
+      foreach(KeyValuePair<int, List<Game>> entry in _gameList)
+      {
+        foreach(Game g in entry.Value)
+        {
+          fullList.Add(g);
+        }
+      }
+
+      return fullList;
     }
 
-    // returns a list which corresponds to the given consoleID
-    private List<Game> GetGameListByConsoleID(int consoleID)
+    /// <summary>
+    /// Adds the specified GameInfo to the specified Game
+    /// </summary>
+    /// <param name="gameInfo">GameInfo to add.</param>
+    /// <param name="game">Game to add the game info to.</param>
+    private void AddGameInfoToGame(GameInfo gameInfo, Game game)
     {
-      return _gameList[consoleID];
+      game.GameInfo = gameInfo;
     }
 
-    //Returns a parsed int, -1 if the string was empty
+    /// <summary>
+    /// Parses a string to an int.
+    /// </summary>
+    /// <param name="str">String to parse</param>
+    /// <returns>Integer parsed from input string, -1 if parsing failed</returns>
     private int StringToInt(string str)
     {
-      if (str == "")
-        return -1;
       try
       {
         return int.Parse(str);
