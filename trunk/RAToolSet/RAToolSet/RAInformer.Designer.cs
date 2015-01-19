@@ -52,7 +52,7 @@
       this.lblSelectGame = new System.Windows.Forms.Label();
       this.comboBoxConsole = new System.Windows.Forms.ComboBox();
       this.lblSelectConsole = new System.Windows.Forms.Label();
-      this.comboBox1 = new System.Windows.Forms.ComboBox();
+      this.comboBoxGame = new System.Windows.Forms.ComboBox();
       this.label2 = new System.Windows.Forms.Label();
       this.lblProgress = new System.Windows.Forms.Label();
       this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -100,7 +100,7 @@
       this.tabPageGameInspector.Controls.Add(this.lblSelectGame);
       this.tabPageGameInspector.Controls.Add(this.comboBoxConsole);
       this.tabPageGameInspector.Controls.Add(this.lblSelectConsole);
-      this.tabPageGameInspector.Controls.Add(this.comboBox1);
+      this.tabPageGameInspector.Controls.Add(this.comboBoxGame);
       this.tabPageGameInspector.Controls.Add(this.label2);
       this.tabPageGameInspector.Controls.Add(this.lblProgress);
       this.tabPageGameInspector.Location = new System.Drawing.Point(4, 22);
@@ -305,15 +305,15 @@
       this.lblSelectConsole.TabIndex = 44;
       this.lblSelectConsole.Text = "Select Console:";
       // 
-      // comboBox1
+      // comboBoxGame
       // 
-      this.comboBox1.Enabled = false;
-      this.comboBox1.FormattingEnabled = true;
-      this.comboBox1.Location = new System.Drawing.Point(322, 6);
-      this.comboBox1.Name = "comboBox1";
-      this.comboBox1.Size = new System.Drawing.Size(256, 21);
-      this.comboBox1.TabIndex = 43;
-      this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+      this.comboBoxGame.Enabled = false;
+      this.comboBoxGame.FormattingEnabled = true;
+      this.comboBoxGame.Location = new System.Drawing.Point(322, 6);
+      this.comboBoxGame.Name = "comboBoxGame";
+      this.comboBoxGame.Size = new System.Drawing.Size(256, 21);
+      this.comboBoxGame.TabIndex = 43;
+      this.comboBoxGame.SelectedIndexChanged += new System.EventHandler(this.comboBoxGame_SelectedIndexChanged);
       // 
       // label2
       // 
@@ -395,7 +395,7 @@
     private System.Windows.Forms.Label lblSelectGame;
     private System.Windows.Forms.ComboBox comboBoxConsole;
     private System.Windows.Forms.Label lblSelectConsole;
-    private System.Windows.Forms.ComboBox comboBox1;
+    private System.Windows.Forms.ComboBox comboBoxGame;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Label lblProgress;
   }

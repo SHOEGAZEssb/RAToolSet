@@ -3,82 +3,58 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Linq;
 using System;
+using System.Net;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace RAToolSet
 {
+  public enum APIFunction
+  {
+    GetConsoleIDs,
+    GetGameList,
+    GetGameExtended
+  }
+
   public partial class RAInformer : Form
   {
     Dictionary<int, string> _consoles = new Dictionary<int, string>();
     Dictionary<int, List<Game>> _gameList = new Dictionary<int, List<Game>>();
+    List<Console> _consoleList = new List<Console>();
     ImageForm _imageForm;
 
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public RAInformer()
     {
       InitializeComponent();
       getConsolesWorker.RunWorkerAsync();
     }
 
-    //Start the given process and returns all it's output, splitted by '|'
-    private string[] GetSplittedProcessOutput(string path, string arguments)
-    {
-      Process prc = new Process();
-      ProcessStartInfo info = new ProcessStartInfo(path, arguments);
-      info.UseShellExecute = false;
-      info.RedirectStandardOutput = true;
-      info.CreateNoWindow = true;
-      prc.StartInfo = info;
-      prc.Start();
-
-      string[] returnString = prc.StandardOutput.ReadToEnd().Split('|');
-      return returnString;
-    }
-
     /// <summary>
-    /// Get the complete game list for the specified consoleID and write it to the corresponding list
+    /// Gets the data via a web request with the specified APIFunction and argument.
     /// </summary>
-    /// <param name="consoleID">Console ID to get game list for</param>
-    private void GetGameList(int consoleID)
+    /// <param name="apiFunction">APIFunction to call.</param>
+    /// <param name="argument">Argument to pass.</param>
+    /// <returns>Response from the WebRequest.</returns>
+    private string GetWebRequestString(APIFunction apiFunction, string argument)
     {
-      getGameListWorker.RunWorkerAsync(consoleID);
-    }
+      var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction.ToString() + ".php?z=coczero&y=AEwHP8tc6G9JaUweJl3zMZq2CRj2uIPV&i=" + argument);
+      string text;
+      var response = (HttpWebResponse)request.GetResponse();
 
-    /// <summary>
-    /// Calls the GetGameInfoWorker with the specified game ID.
-    /// </summary>
-    /// <param name="consoleID">Game ID to get gameInfo for.</param> 
-    private void GetGameInfo(int gameID)
-    {
-      getGameInfoWorker.RunWorkerAsync(gameID);
-    }
-
-    /// <summary>
-    /// Gets the game info for all given game IDs
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e">Game IDs to get info for</param>
-    private void getGameInfoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-    {
-      string idList = e.Argument.ToString();
-
-      string[] gameIDs = idList.Split(' ');
-
-      Invoke(new Action(() =>
+      using (var sr = new StreamReader(response.GetResponseStream()))
       {
-        lblProgress.Text = "Getting " + GetGameByID((int)e.Argument).Title + " Game Info";
-      }));
+        text = sr.ReadToEnd();
+      }
 
-      string[] arr = GetSplittedProcessOutput(@"..\..\..\..\GetGameInfoExtended.exe", idList);
+      text = text.Replace("[", "").Replace("]", "");
 
-      for (int f = 0; f < arr.Length / 19; f++)
-      {
-        GameInfo gameInfo = new GameInfo(StringToInt(arr[(19 * f)]), arr[(19 * f) + 1], StringToInt(arr[(19 * f) + 2]), StringToInt(arr[(19 * f) + 3]),
-                                          arr[(19 * f) + 4], arr[(19 * f) + 5], arr[(19 * f) + 6], arr[(19 * f) + 7], arr[(19 * f) + 8], arr[(19 * f) + 9],
-                                          arr[(19 * f) + 10], arr[(19 * f) + 11], arr[(19 * f) + 12], StringToInt(arr[(19 * f) + 13]), arr[(19 * f) + 14],
-                                          arr[(19 * f) + 15], StringToInt(arr[(19 * f) + 16]), StringToInt(arr[(19 * f) + 17]), StringToInt(arr[(19 * f) + 18]));
+      if(apiFunction != APIFunction.GetGameExtended)
+        text = text.Replace("},", "};");
 
-        AddGameInfoToGame(gameInfo, GetGameByID(int.Parse(gameIDs[f])));
-        PrintGameInfo(gameInfo);
-      }   
+      return text;
     }
 
     /// <summary>
@@ -99,14 +75,52 @@ namespace RAToolSet
       }));  
     }
 
-    private Game GetGameByID(int gameID)
+    /// <summary>
+    /// Gets the game with the specified id from the full game list.
+    /// </summary>
+    /// <param name="id">ID to get game for.</param>
+    /// <returns>Game with the specified id</returns>
+    private Game GetGameByID(int id)
     {
-      return GetFullGameList().Where<Game>(i => i.ID == gameID).FirstOrDefault();
+      return GetFullGameList().Where<Game>(i => i.ID == id).FirstOrDefault();
     }
 
+    /// <summary>
+    /// Gets the game with the specified name from the full game list.
+    /// </summary>
+    /// <param name="name">Name to get game for.</param>
+    /// <returns>Game with the specified name.</returns>
     private Game GetGameByName(string name)
     {
       return GetFullGameList().Where<Game>(i => i.Title == name).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Gets the console with the specified console id from the console list.
+    /// </summary>
+    /// <param name="id">ID to get console for.</param>
+    /// <returns>Console with the specified id.</returns>
+    private Console GetConsoleByID(int id)
+    {
+      return _consoleList.Where<Console>(i => i.ID == id).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Calls the GetGameInfoWorker with the specified game ID.
+    /// </summary>
+    /// <param name="consoleID">Game ID to get gameInfo for.</param> 
+    private void FetchGameInfo(int gameID)
+    {
+      getGameInfoWorker.RunWorkerAsync(gameID);
+    }
+
+    /// <summary>
+    /// Get the complete game list for the specified consoleID and write it to the corresponding list
+    /// </summary>
+    /// <param name="consoleID">Console ID to get game list for</param>
+    private void FetchGameList(int consoleID)
+    {
+      getGameListWorker.RunWorkerAsync(consoleID);
     }
 
     /// <summary>
@@ -117,11 +131,11 @@ namespace RAToolSet
     {
       List<Game> fullList = new List<Game>();
 
-      foreach (KeyValuePair<int, List<Game>> entry in _gameList)
+      foreach(Console c in _consoleList)
       {
-        foreach (Game g in entry.Value)
+        foreach(Game g in c.Games)
         {
-          fullList.Add(g);
+          fullList.Add(g); //TODO: see if .concat is faster
         }
       }
 
@@ -139,30 +153,41 @@ namespace RAToolSet
     }
 
     /// <summary>
-    /// Parses a string to an int.
+    /// Downloads the game list for the newly selected console, if not already done.
     /// </summary>
-    /// <param name="str">String to parse</param>
-    /// <returns>Integer parsed from input string, -1 if parsing failed</returns>
-    private int StringToInt(string str)
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void comboBoxConsole_SelectedIndexChanged(object sender, EventArgs e)
     {
-      try
+      comboBoxGame.Items.Clear();
+      Console selectedConsole = GetConsoleByID(comboBoxConsole.SelectedIndex + 1);
+
+      if (selectedConsole.Games.Count == 0)
+        FetchGameList(selectedConsole.ID);
+      else
       {
-        return int.Parse(str);
-      }
-      catch
-      {
-        return -1;
+        foreach (Game g in selectedConsole.Games)
+        {
+          comboBoxGame.Items.Add(g.Title);
+        }
       }
     }
 
-    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    /// <summary>
+    /// Downloads the game info for the newly selected game, if not already done.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void comboBoxGame_SelectedIndexChanged(object sender, EventArgs e)
     {
-      Game g = GetGameByName(comboBox1.SelectedItem.ToString());
+      Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
       if(g.GameInfo == null)
-        GetGameInfo(g.ID);
+        FetchGameInfo(g.ID);
       else
         PrintGameInfo(g.GameInfo);
     }
+
+    #region WorkerMethods
 
     /// <summary>
     /// Worker to fetch all consoles
@@ -176,18 +201,22 @@ namespace RAToolSet
         lblProgress.Text = "Getting Console Data";
       }));
 
-      Stopwatch w = new Stopwatch();
-      w.Start();
-      string[] arr = GetSplittedProcessOutput(@"..\..\..\..\GetConsoleIDs.exe", "");
-      w.Stop();
+      string[] consoles = GetWebRequestString(APIFunction.GetConsoleIDs, "").Split(';');
 
-      for (int i = 0; i < arr.Length / 2; i++)
+      Invoke(new Action(() =>
       {
-        _consoles.Add(StringToInt(arr[(i * 2)]), arr[(i * 2) + 1]);
+        lblProgress.Text = "Fetched Console Information";
+        comboBoxConsole.Enabled = true;
+      }));
+
+      foreach (string console in consoles)
+      {
+        Console c = JsonConvert.DeserializeObject<Console>(console);
+        _consoleList.Add(c);
         Invoke(new Action(() =>
         {
-          comboBoxConsole.Items.Add(arr[(i * 2) + 1]);
-        }));
+          comboBoxConsole.Items.Add(c.Name);
+        }));   
       }
 
       //Initialize GameList Dicitonary
@@ -195,27 +224,32 @@ namespace RAToolSet
       {
         _gameList.Add(i, new List<Game>());
       }
+    }
+
+    /// <summary>
+    /// Gets the game info for all given game IDs
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e">Game ID to get info for</param>
+    private void getGameInfoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+    {
+      int gameID = (int)e.Argument;
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Fetched Console Information, Took " + w.ElapsedMilliseconds + " ms";
-        comboBoxConsole.Enabled = true;
+        lblProgress.Text = "Getting " + GetGameByID(gameID).Title + " Game Info";
       }));
-    }
 
-    private void comboBoxConsole_SelectedIndexChanged(object sender, EventArgs e)
-    {
-      comboBox1.Items.Clear();
+      string info = GetWebRequestString(APIFunction.GetGameExtended, gameID.ToString());
 
-      if (_gameList[comboBoxConsole.SelectedIndex + 1].Count == 0)
-        GetGameList(comboBoxConsole.SelectedIndex + 1);
-      else
+      Invoke(new Action(() =>
       {
-        foreach (Game g in _gameList[comboBoxConsole.SelectedIndex + 1])
-        {
-          comboBox1.Items.Add(g.Title);
-        }
-      }
+        lblProgress.Text = "Fetched " + GetGameByID(gameID).Title + " Game Info";
+      }));
+
+      GameInfo g = JsonConvert.DeserializeObject<GameInfo>(info);
+      AddGameInfoToGame(g, GetGameByID(gameID));
+      PrintGameInfo(g);
     }
 
     /// <summary>
@@ -229,43 +263,62 @@ namespace RAToolSet
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Getting " + _consoles[consoleID] + " Game List.";
+        lblProgress.Text = "Getting " + GetConsoleByID(consoleID).Name + " Game List.";
       }));
 
-      string[] arr = GetSplittedProcessOutput(@"..\..\..\..\GetGameList.exe", consoleID.ToString());
-      List<Game> list = _gameList[consoleID];
+      string json = GetWebRequestString(APIFunction.GetGameList, consoleID.ToString());
 
-      for (int i = 0; i < arr.Length / 4; i++)
+      Invoke(new Action(() =>
       {
-        list.Add(new Game(arr[4 * i], StringToInt(arr[(4 * i) + 1]), StringToInt(arr[(4 * i) + 2]), arr[(4 * i) + 3]));
+        lblProgress.Text = "Fetched " + GetConsoleByID(consoleID).Name + " Game List";
+      }));
+
+      string[] games = json.Split(';');
+      foreach (string game in games)
+      {
+        _consoleList[consoleID].Games.Add(JsonConvert.DeserializeObject<Game>(game));
       }
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Fetched " + _consoles[consoleID] + " Game List";
-        comboBox1.Enabled = true;
+        comboBoxGame.Enabled = true;
 
-        foreach (Game g in list)
+        foreach (Game g in _consoleList[consoleID].Games)
         {
-          comboBox1.Items.Add(g.Title);
+          if (g.Title != null)
+            comboBoxGame.Items.Add(g.Title);
+          else
+            comboBoxGame.Items.Add("!CORRUPTED TITLE!");
         }
       }));
     }
 
+    #endregion
+
+    /// <summary>
+    /// Opens the forum thread of the currently displayed game.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void linklblForumPost_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-      if (comboBox1.SelectedItem != null)
+      if (comboBoxGame.SelectedItem != null)
       {
-        string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + GetGameByName(comboBox1.SelectedItem.ToString()).GameInfo.ForumTopicID);
+        string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + GetGameByName(comboBoxGame.SelectedItem.ToString()).GameInfo.ForumTopicID);
         Process.Start(link);
       }
     }
 
+    /// <summary>
+    /// Opens the ImageForm with the images of the currently displayed game.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void linklblImages_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-      if (comboBox1.SelectedItem != null)
+      if (comboBoxGame.SelectedItem != null)
       {
-        Game g = GetGameByName(comboBox1.SelectedItem.ToString());
+        Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
         _imageForm = new ImageForm(g.GameInfo.ImageIcon, g.GameInfo.ImageTitle, g.GameInfo.ImageIngame, g.GameInfo.ImageBoxArt);
         _imageForm.Show();
       }
