@@ -3,7 +3,7 @@
   /// <summary>
   /// Represents a single achievement of a game.
   /// </summary>
-  class Achievement
+  public class Achievement
   {
     int _id;
     int _numAwarded;
