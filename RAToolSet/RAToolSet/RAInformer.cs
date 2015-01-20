@@ -40,7 +40,8 @@ namespace RAToolSet
     /// <returns>Response from the WebRequest.</returns>
     private string GetWebRequestString(APIFunction apiFunction, string argument)
     {
-      var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction.ToString() + ".php?z=coczero&y=AEwHP8tc6G9JaUweJl3zMZq2CRj2uIPV&i=" + argument);
+      var request = WebRequest.Create("http://54.77.113.119/API/API_" + apiFunction.ToString() + ".php?z=coczero&y=AEwHP8tc6G9JaUweJl3zMZq2CRj2uIPV&i=" + argument);
+      request.Proxy = new WebProxy();
       string text;
       var response = (HttpWebResponse)request.GetResponse();
 
@@ -170,6 +171,8 @@ namespace RAToolSet
         {
           comboBoxGame.Items.Add(g.Title);
         }
+
+        comboBoxGame.SelectedItem = "";
       }
     }
 
@@ -290,6 +293,8 @@ namespace RAToolSet
           else
             comboBoxGame.Items.Add("!CORRUPTED TITLE!");
         }
+
+        comboBoxGame.SelectedItem = "";
       }));
     }
 
@@ -304,8 +309,12 @@ namespace RAToolSet
     {
       if (comboBoxGame.SelectedItem != null)
       {
-        string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + GetGameByName(comboBoxGame.SelectedItem.ToString()).GameInfo.ForumTopicID);
-        Process.Start(link);
+        Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
+        if (g.GameInfo != null)
+        {
+          string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + g.GameInfo.ForumTopicID);
+          Process.Start(link);
+        }
       }
     }
 
@@ -319,8 +328,11 @@ namespace RAToolSet
       if (comboBoxGame.SelectedItem != null)
       {
         Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
-        _imageForm = new ImageForm(g.GameInfo.ImageIcon, g.GameInfo.ImageTitle, g.GameInfo.ImageIngame, g.GameInfo.ImageBoxArt);
-        _imageForm.Show();
+        if (g.GameInfo != null)
+        {
+          _imageForm = new ImageForm(g.GameInfo);
+          _imageForm.Show();
+        }
       }
     }
   }

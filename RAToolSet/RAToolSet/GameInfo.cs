@@ -8,7 +8,7 @@ namespace RAToolSet
   /// <summary>
   /// Represents the extended information about a game.
   /// </summary>
-  class GameInfo
+  public class GameInfo
   {
     private int _id;
     private string _title;
@@ -263,11 +263,17 @@ namespace RAToolSet
       NumAchievements = numAchievements;
       NumDistinctPlayersCasual = numDistinctPlayersCasual;
       NumDistinctPlayersHardcore = numDistinctPlayersHardcore;
+    }
 
-      ImageIcon = GetImage(ImageIconString);
-      ImageTitle = GetImage(ImageTitleString);
-      ImageIngame = GetImage(ImageIngameString);
-      ImageBoxArt = GetImage(ImageBoxArtString);
+    public void FetchImages()
+    {
+      if (ImageIcon == null) //already fetched?
+      {
+        ImageIcon = GetImage(ImageIconString);
+        ImageTitle = GetImage(ImageTitleString);
+        ImageIngame = GetImage(ImageIngameString);
+        ImageBoxArt = GetImage(ImageBoxArtString);
+      }
     }
 
     /// <summary>
@@ -278,6 +284,7 @@ namespace RAToolSet
     private Image GetImage(string urlEnding)
     {
       HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create("http://i.retroachievements.org" + urlEnding);
+      httpWebRequest.Proxy = new WebProxy();
       HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse();
       Stream stream = httpWebReponse.GetResponseStream();
       return Image.FromStream(stream);

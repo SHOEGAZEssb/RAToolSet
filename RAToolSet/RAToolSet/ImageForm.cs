@@ -12,14 +12,22 @@ namespace RAToolSet
 {
   public partial class ImageForm : Form
   {
-    public ImageForm(Image imageIcon, Image imageTitle, Image imageIngame, Image imageBoxArt)
+    private GameInfo _g;
+
+    public ImageForm(GameInfo g)
     {
       InitializeComponent();
+      _g = g;
+      getImagesWorker.RunWorkerAsync();
+    }
 
-      pictureBoxIcon.Image = imageIcon;
-      pictureBoxTitle.Image = imageTitle;
-      pictureBoxIngame.Image = imageIngame;
-      pictureBoxBoxArt.Image = imageBoxArt;
+    private void getImagesWorker_DoWork(object sender, DoWorkEventArgs e)
+    {
+      _g.FetchImages();
+      pictureBoxIcon.Image = _g.ImageIcon;
+      pictureBoxTitle.Image = _g.ImageTitle;
+      pictureBoxIngame.Image = _g.ImageIngame;
+      pictureBoxBoxArt.Image = _g.ImageBoxArt;
     }
   }
 }
