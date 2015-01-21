@@ -38,6 +38,8 @@
       this.comboBoxGame = new System.Windows.Forms.ComboBox();
       this.label2 = new System.Windows.Forms.Label();
       this.panel2 = new System.Windows.Forms.Panel();
+      this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+      this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.tabPageGameInspector = new System.Windows.Forms.TabPage();
       this.lblReleaseContent = new System.Windows.Forms.Label();
@@ -59,13 +61,14 @@
       this.lblIDContent = new System.Windows.Forms.Label();
       this.lblID = new System.Windows.Forms.Label();
       this.tabPage2 = new System.Windows.Forms.TabPage();
-      this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-      this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
+      this.lblSelectAchievement = new System.Windows.Forms.Label();
+      this.comboBoxAchievement = new System.Windows.Forms.ComboBox();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
+      this.statusStrip1.SuspendLayout();
       this.tabControl1.SuspendLayout();
       this.tabPageGameInspector.SuspendLayout();
-      this.statusStrip1.SuspendLayout();
+      this.tabPage2.SuspendLayout();
       this.SuspendLayout();
       // 
       // getGameInfoWorker
@@ -90,7 +93,7 @@
       this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
       this.panel1.Location = new System.Drawing.Point(0, 0);
       this.panel1.Name = "panel1";
-      this.panel1.Size = new System.Drawing.Size(598, 31);
+      this.panel1.Size = new System.Drawing.Size(669, 31);
       this.panel1.TabIndex = 1;
       // 
       // lblSelectGame
@@ -147,8 +150,23 @@
       this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
       this.panel2.Location = new System.Drawing.Point(0, 31);
       this.panel2.Name = "panel2";
-      this.panel2.Size = new System.Drawing.Size(598, 271);
+      this.panel2.Size = new System.Drawing.Size(669, 337);
       this.panel2.TabIndex = 2;
+      // 
+      // statusStrip1
+      // 
+      this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblProgress});
+      this.statusStrip1.Location = new System.Drawing.Point(0, 315);
+      this.statusStrip1.Name = "statusStrip1";
+      this.statusStrip1.Size = new System.Drawing.Size(669, 22);
+      this.statusStrip1.TabIndex = 2;
+      this.statusStrip1.Text = "statusStrip1";
+      // 
+      // lblProgress
+      // 
+      this.lblProgress.Name = "lblProgress";
+      this.lblProgress.Size = new System.Drawing.Size(0, 17);
       // 
       // tabControl1
       // 
@@ -158,7 +176,7 @@
       this.tabControl1.Location = new System.Drawing.Point(0, 0);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(598, 271);
+      this.tabControl1.Size = new System.Drawing.Size(669, 337);
       this.tabControl1.TabIndex = 1;
       // 
       // tabPageGameInspector
@@ -184,7 +202,7 @@
       this.tabPageGameInspector.Location = new System.Drawing.Point(4, 22);
       this.tabPageGameInspector.Name = "tabPageGameInspector";
       this.tabPageGameInspector.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPageGameInspector.Size = new System.Drawing.Size(590, 245);
+      this.tabPageGameInspector.Size = new System.Drawing.Size(661, 311);
       this.tabPageGameInspector.TabIndex = 0;
       this.tabPageGameInspector.Text = "Game Inspector";
       this.tabPageGameInspector.UseVisualStyleBackColor = true;
@@ -357,34 +375,38 @@
       // 
       // tabPage2
       // 
+      this.tabPage2.Controls.Add(this.comboBoxAchievement);
+      this.tabPage2.Controls.Add(this.lblSelectAchievement);
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(590, 256);
+      this.tabPage2.Size = new System.Drawing.Size(661, 311);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "tabPage2";
       this.tabPage2.UseVisualStyleBackColor = true;
       // 
-      // statusStrip1
+      // lblSelectAchievement
       // 
-      this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblProgress});
-      this.statusStrip1.Location = new System.Drawing.Point(0, 249);
-      this.statusStrip1.Name = "statusStrip1";
-      this.statusStrip1.Size = new System.Drawing.Size(598, 22);
-      this.statusStrip1.TabIndex = 2;
-      this.statusStrip1.Text = "statusStrip1";
+      this.lblSelectAchievement.AutoSize = true;
+      this.lblSelectAchievement.Location = new System.Drawing.Point(6, 8);
+      this.lblSelectAchievement.Name = "lblSelectAchievement";
+      this.lblSelectAchievement.Size = new System.Drawing.Size(105, 13);
+      this.lblSelectAchievement.TabIndex = 3;
+      this.lblSelectAchievement.Text = "Select Achievement:";
       // 
-      // lblProgress
+      // comboBoxAchievement
       // 
-      this.lblProgress.Name = "lblProgress";
-      this.lblProgress.Size = new System.Drawing.Size(0, 17);
+      this.comboBoxAchievement.FormattingEnabled = true;
+      this.comboBoxAchievement.Location = new System.Drawing.Point(117, 5);
+      this.comboBoxAchievement.Name = "comboBoxAchievement";
+      this.comboBoxAchievement.Size = new System.Drawing.Size(213, 21);
+      this.comboBoxAchievement.TabIndex = 4;
       // 
       // RAInformer
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(598, 302);
+      this.ClientSize = new System.Drawing.Size(669, 368);
       this.Controls.Add(this.panel2);
       this.Controls.Add(this.panel1);
       this.Name = "RAInformer";
@@ -393,11 +415,13 @@
       this.panel1.PerformLayout();
       this.panel2.ResumeLayout(false);
       this.panel2.PerformLayout();
+      this.statusStrip1.ResumeLayout(false);
+      this.statusStrip1.PerformLayout();
       this.tabControl1.ResumeLayout(false);
       this.tabPageGameInspector.ResumeLayout(false);
       this.tabPageGameInspector.PerformLayout();
-      this.statusStrip1.ResumeLayout(false);
-      this.statusStrip1.PerformLayout();
+      this.tabPage2.ResumeLayout(false);
+      this.tabPage2.PerformLayout();
       this.ResumeLayout(false);
 
     }
@@ -437,6 +461,8 @@
     private System.Windows.Forms.TabPage tabPage2;
     private System.Windows.Forms.StatusStrip statusStrip1;
     private System.Windows.Forms.ToolStripStatusLabel lblProgress;
+    private System.Windows.Forms.ComboBox comboBoxAchievement;
+    private System.Windows.Forms.Label lblSelectAchievement;
   }
 }
 
