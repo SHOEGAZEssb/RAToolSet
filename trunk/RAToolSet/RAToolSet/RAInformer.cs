@@ -52,7 +52,7 @@ namespace RAToolSet
 
       text = text.Replace("[", "").Replace("]", "");
 
-      if(apiFunction != APIFunction.GetGameExtended)
+      if (apiFunction != APIFunction.GetGameExtended)
         text = text.Replace("},", "};");
 
       return text;
@@ -73,7 +73,7 @@ namespace RAToolSet
         lblDeveloperContent.Text = info.Developer;
         lblGenreContent.Text = info.Genre;
         lblReleaseContent.Text = info.Released;
-      }));  
+      }));
     }
 
     /// <summary>
@@ -132,9 +132,9 @@ namespace RAToolSet
     {
       List<Game> fullList = new List<Game>();
 
-      foreach(Console c in _consoleList)
+      foreach (Console c in _consoleList)
       {
-        foreach(Game g in c.Games)
+        foreach (Game g in c.Games)
         {
           fullList.Add(g); //TODO: see if .concat is faster
         }
@@ -184,10 +184,18 @@ namespace RAToolSet
     private void comboBoxGame_SelectedIndexChanged(object sender, EventArgs e)
     {
       Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
-      if(g.GameInfo == null)
+      if (g.GameInfo == null)
         FetchGameInfo(g.ID);
       else
+      {
         PrintGameInfo(g.GameInfo);
+
+        comboBoxAchievement.Items.Clear();
+        foreach (Achievement a in g.GameInfo.Achievements.Values)
+        {
+          comboBoxAchievement.Items.Add(a.Title);
+        }
+      }
     }
 
     #region WorkerMethods
@@ -219,7 +227,7 @@ namespace RAToolSet
         Invoke(new Action(() =>
         {
           comboBoxConsole.Items.Add(c.Name);
-        }));   
+        }));
       }
 
       //Initialize GameList Dicitonary
@@ -253,6 +261,15 @@ namespace RAToolSet
       GameInfo g = JsonConvert.DeserializeObject<GameInfo>(info);
       AddGameInfoToGame(g, GetGameByID(gameID));
       PrintGameInfo(g);
+
+      Invoke(new Action(() =>
+      {
+       comboBoxAchievement.Items.Clear();
+       foreach (Achievement a in g.Achievements.Values)
+       {
+         comboBoxAchievement.Items.Add(a.Title);
+       }
+      }));
     }
 
     /// <summary>
@@ -262,31 +279,31 @@ namespace RAToolSet
     /// <param name="e">Console ID to get game list for.</param>
     private void getGameListWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
-      int consoleID = (int)e.Argument;
+      Console c = GetConsoleByID((int)e.Argument);
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Getting " + GetConsoleByID(consoleID).Name + " Game List.";
+        lblProgress.Text = "Getting " + c.Name + " Game List.";
       }));
 
-      string json = GetWebRequestString(APIFunction.GetGameList, consoleID.ToString());
+      string json = GetWebRequestString(APIFunction.GetGameList, c.ID.ToString());
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Fetched " + GetConsoleByID(consoleID).Name + " Game List";
+        lblProgress.Text = "Fetched " + c.Name + " Game List";
       }));
 
       string[] games = json.Split(';');
       foreach (string game in games)
       {
-        _consoleList[consoleID].Games.Add(JsonConvert.DeserializeObject<Game>(game));
+        c.Games.Add(JsonConvert.DeserializeObject<Game>(game));
       }
 
       Invoke(new Action(() =>
       {
         comboBoxGame.Enabled = true;
 
-        foreach (Game g in _consoleList[consoleID].Games)
+        foreach (Game g in c.Games)
         {
           if (g.Title != null)
             comboBoxGame.Items.Add(g.Title);
