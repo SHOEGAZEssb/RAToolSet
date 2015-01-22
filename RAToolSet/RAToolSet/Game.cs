@@ -9,7 +9,7 @@
     private int _id;
     private int _consoleID;
     private string _consoleName;
-    GameInfo _gameInfo;
+    private GameInfo _gameInfo;
 
     /// <summary>
     /// The title of this game.

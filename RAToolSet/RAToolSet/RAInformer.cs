@@ -18,10 +18,10 @@ namespace RAToolSet
 
   public partial class RAInformer : Form
   {
-    Dictionary<int, string> _consoles = new Dictionary<int, string>();
-    Dictionary<int, List<Game>> _gameList = new Dictionary<int, List<Game>>();
-    List<Console> _consoleList = new List<Console>();
-    ImageForm _imageForm;
+    private Dictionary<int, string> _consoles = new Dictionary<int, string>();
+    private Dictionary<int, List<Game>> _gameList = new Dictionary<int, List<Game>>();
+    private List<Console> _consoleList = new List<Console>();
+    private Stopwatch _watch = new Stopwatch();
 
     /// <summary>
     /// Ctor.
@@ -212,11 +212,14 @@ namespace RAToolSet
         lblProgress.Text = "Getting Console Data";
       }));
 
+      _watch.Reset();
+      _watch.Start();
       string[] consoles = GetWebRequestString(APIFunction.GetConsoleIDs, "").Split(';');
+      _watch.Stop();
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Fetched Console Information";
+        lblProgress.Text = "Fetched Console Information, took " + _watch.ElapsedMilliseconds + " milliseconds.";
         comboBoxConsole.Enabled = true;
       }));
 
@@ -251,11 +254,14 @@ namespace RAToolSet
         lblProgress.Text = "Getting " + GetGameByID(gameID).Title + " Game Info";
       }));
 
+      _watch.Reset();
+      _watch.Start();
       string info = GetWebRequestString(APIFunction.GetGameExtended, gameID.ToString());
+      _watch.Stop();
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Fetched " + GetGameByID(gameID).Title + " Game Info";
+        lblProgress.Text = "Fetched " + GetGameByID(gameID).Title + " Game Info, took " + _watch.ElapsedMilliseconds + " milliseconds.";
       }));
 
       GameInfo g = JsonConvert.DeserializeObject<GameInfo>(info);
@@ -286,11 +292,14 @@ namespace RAToolSet
         lblProgress.Text = "Getting " + c.Name + " Game List.";
       }));
 
+      _watch.Reset();
+      _watch.Start();
       string json = GetWebRequestString(APIFunction.GetGameList, c.ID.ToString());
+      _watch.Stop();
 
       Invoke(new Action(() =>
       {
-        lblProgress.Text = "Fetched " + c.Name + " Game List";
+        lblProgress.Text = "Fetched " + c.Name + " Game List, took " + _watch.ElapsedMilliseconds + " milliseconds.";
       }));
 
       string[] games = json.Split(';');
@@ -346,10 +355,43 @@ namespace RAToolSet
       {
         Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
         if (g.GameInfo != null)
-        {
-          _imageForm = new ImageForm(g.GameInfo);
-          _imageForm.Show();
+        {     
+          ImageForm imageForm = new ImageForm(g.GameInfo);
+          imageForm.Show();
         }
+      }
+    }
+
+    /// <summary>
+    /// Updates the label with the infos from the selected achievement.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void comboBoxAchievement_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      Achievement a = GetGameByName(comboBoxGame.SelectedItem.ToString()).GameInfo.Achievements.ElementAt(comboBoxAchievement.SelectedIndex).Value;
+      lblAchIDContent.Text = a.ID.ToString();
+      lblNumAwardedContent.Text = a.NumAwarded.ToString();
+      lblNumAwardedHardcoreContent.Text = a.NumAwardedHardcore.ToString();
+      lblAchTitleContent.Text = a.Title;
+      lblDescriptionContent.Text = a.Description;
+      lblPointsContent.Text = a.Points.ToString();
+      lblTrueRatioContent.Text = a.TrueRatio.ToString();
+      lblAuthorContent.Text = a.Author;
+      lblDateModifiedContent.Text = a.DateModified;
+      lblDateCreatedContent.Text = a.DateCreated;
+      //memory conditions;
+      //date earned
+      //date earned hc
+    }
+
+    private void linkLabelRichPresence_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+      if (comboBoxGame.SelectedItem != null)
+      {
+        Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
+        RichPresenceForm rpForm = new RichPresenceForm(g.GameInfo.RichPresencePatch);
+        rpForm.Show();
       }
     }
   }

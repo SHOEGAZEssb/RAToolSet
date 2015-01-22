@@ -10,10 +10,17 @@ using System.Windows.Forms;
 
 namespace RAToolSet
 {
+  /// <summary>
+  /// Displays the images of a game.
+  /// </summary>
   public partial class ImageForm : Form
   {
     private GameInfo _g;
 
+    /// <summary>
+    /// Ctor.
+    /// </summary>
+    /// <param name="g">GameInfo to get images from.</param>
     public ImageForm(GameInfo g)
     {
       InitializeComponent();
@@ -21,6 +28,11 @@ namespace RAToolSet
       getImagesWorker.RunWorkerAsync();
     }
 
+    /// <summary>
+    /// Fetches and displays the images from the GameInfo.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void getImagesWorker_DoWork(object sender, DoWorkEventArgs e)
     {
       _g.FetchImages();
