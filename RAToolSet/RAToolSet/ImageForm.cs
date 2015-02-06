@@ -15,13 +15,13 @@ namespace RAToolSet
   /// </summary>
   public partial class ImageForm : Form
   {
-    private GameInfo _g;
+    private Game _g;
 
     /// <summary>
     /// Ctor.
     /// </summary>
     /// <param name="g">GameInfo to get images from.</param>
-    public ImageForm(GameInfo g)
+    public ImageForm(Game g)
     {
       InitializeComponent();
       _g = g;

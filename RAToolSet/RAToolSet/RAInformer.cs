@@ -6,6 +6,7 @@ using System;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace RAToolSet
 {
@@ -22,6 +23,8 @@ namespace RAToolSet
     private Dictionary<int, List<Game>> _gameList = new Dictionary<int, List<Game>>();
     private List<Console> _consoleList = new List<Console>();
     private Stopwatch _watch = new Stopwatch();
+    private Database _database = new Database();
+    private List<int> _fullyFetchedGames = new List<int>();
 
     /// <summary>
     /// Ctor.
@@ -62,7 +65,7 @@ namespace RAToolSet
     /// Updates the labels with the currently selected game's info
     /// </summary>
     /// <param name="info">GameInfo to display</param>
-    private void PrintGameInfo(GameInfo info)
+    private void PrintGameInfo(Game info)
     {
       Invoke(new Action(() =>
       {
@@ -144,16 +147,6 @@ namespace RAToolSet
     }
 
     /// <summary>
-    /// Adds the specified GameInfo to the specified Game
-    /// </summary>
-    /// <param name="gameInfo">GameInfo to add.</param>
-    /// <param name="game">Game to add the game info to.</param>
-    private void AddGameInfoToGame(GameInfo gameInfo, Game game)
-    {
-      game.GameInfo = gameInfo;
-    }
-
-    /// <summary>
     /// Downloads the game list for the newly selected console, if not already done.
     /// </summary>
     /// <param name="sender"></param>
@@ -184,14 +177,14 @@ namespace RAToolSet
     private void comboBoxGame_SelectedIndexChanged(object sender, EventArgs e)
     {
       Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
-      if (g.GameInfo == null)
+      if (!_fullyFetchedGames.Contains(g.ID))
         FetchGameInfo(g.ID);
       else
       {
-        PrintGameInfo(g.GameInfo);
+        PrintGameInfo(g);
 
         comboBoxAchievement.Items.Clear();
-        foreach (Achievement a in g.GameInfo.Achievements.Values)
+        foreach (Achievement a in g.Achievements.Values)
         {
           comboBoxAchievement.Items.Add(a.Title);
         }
@@ -264,17 +257,21 @@ namespace RAToolSet
         lblProgress.Text = "Fetched " + GetGameByID(gameID).Title + " Game Info, took " + _watch.ElapsedMilliseconds + " milliseconds.";
       }));
 
-      GameInfo g = JsonConvert.DeserializeObject<GameInfo>(info);
-      AddGameInfoToGame(g, GetGameByID(gameID));
+      Game g = JsonConvert.DeserializeObject<Game>(info);
+
+      //Remove old game with less info and add the new one.
+      GetConsoleByID(g.ConsoleID).Games.Remove((Game)GetConsoleByID(g.ConsoleID).Games.Where(i => i.ID == g.ID).FirstOrDefault());
+      GetConsoleByID(g.ConsoleID).Games.Add(g);
       PrintGameInfo(g);
+      _fullyFetchedGames.Add(g.ID);
 
       Invoke(new Action(() =>
       {
-       comboBoxAchievement.Items.Clear();
-       foreach (Achievement a in g.Achievements.Values)
-       {
-         comboBoxAchievement.Items.Add(a.Title);
-       }
+        comboBoxAchievement.Items.Clear();
+        foreach (Achievement a in g.Achievements.Values)
+        {
+          comboBoxAchievement.Items.Add(a.Title);
+        }
       }));
     }
 
@@ -305,7 +302,15 @@ namespace RAToolSet
       string[] games = json.Split(';');
       foreach (string game in games)
       {
-        c.Games.Add(JsonConvert.DeserializeObject<Game>(game));
+        try
+        {
+          c.Games.Add(JsonConvert.DeserializeObject<Game>(game));
+        }
+        catch
+        {
+          //something went wrong with parsing, check game title for ';'
+          continue;
+        }
       }
 
       Invoke(new Action(() =>
@@ -336,9 +341,9 @@ namespace RAToolSet
       if (comboBoxGame.SelectedItem != null)
       {
         Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
-        if (g.GameInfo != null)
+        if (_fullyFetchedGames.Contains(g.ID))
         {
-          string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + g.GameInfo.ForumTopicID);
+          string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + g.ForumTopicID);
           Process.Start(link);
         }
       }
@@ -354,9 +359,9 @@ namespace RAToolSet
       if (comboBoxGame.SelectedItem != null)
       {
         Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
-        if (g.GameInfo != null)
-        {     
-          ImageForm imageForm = new ImageForm(g.GameInfo);
+        if (_fullyFetchedGames.Contains(g.ID))
+        {
+          ImageForm imageForm = new ImageForm(g);
           imageForm.Show();
         }
       }
@@ -369,7 +374,7 @@ namespace RAToolSet
     /// <param name="e"></param>
     private void comboBoxAchievement_SelectedIndexChanged(object sender, EventArgs e)
     {
-      Achievement a = GetGameByName(comboBoxGame.SelectedItem.ToString()).GameInfo.Achievements.ElementAt(comboBoxAchievement.SelectedIndex).Value;
+      Achievement a = GetGameByName(comboBoxGame.SelectedItem.ToString()).Achievements.ElementAt(comboBoxAchievement.SelectedIndex).Value;
       lblAchIDContent.Text = a.ID.ToString();
       lblNumAwardedContent.Text = a.NumAwarded.ToString();
       lblNumAwardedHardcoreContent.Text = a.NumAwardedHardcore.ToString();
@@ -390,8 +395,39 @@ namespace RAToolSet
       if (comboBoxGame.SelectedItem != null)
       {
         Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
-        RichPresenceForm rpForm = new RichPresenceForm(g.GameInfo.RichPresencePatch);
+        RichPresenceForm rpForm = new RichPresenceForm(g.RichPresencePatch);
         rpForm.Show();
+      }
+    }
+
+    private void btnFetchAll_Click(object sender, EventArgs e)
+    {
+      FetchAllWorker.RunWorkerAsync();
+    }
+
+    private void FetchAllWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+    {
+      foreach (Console c in _consoleList)
+      {
+        while (getGameListWorker.IsBusy)
+        {
+          Thread.Sleep(100);
+        }
+
+        getGameListWorker.RunWorkerAsync(c.ID);
+      }
+
+      foreach (Console c in _consoleList)
+      {
+        foreach (Game g in c.Games)
+        {
+          while (getGameInfoWorker.IsBusy)
+          {
+            Thread.Sleep(1);
+          }
+
+          getGameInfoWorker.RunWorkerAsync(g.ID);
+        }
       }
     }
   }

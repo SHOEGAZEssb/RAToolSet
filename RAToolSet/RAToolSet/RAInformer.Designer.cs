@@ -42,6 +42,8 @@
       this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.tabPageGameInspector = new System.Windows.Forms.TabPage();
+      this.linkLabelRichPresence = new System.Windows.Forms.LinkLabel();
+      this.lblRichPresence = new System.Windows.Forms.Label();
       this.lblReleaseContent = new System.Windows.Forms.Label();
       this.lblGenreContent = new System.Windows.Forms.Label();
       this.lblDeveloperContent = new System.Windows.Forms.Label();
@@ -61,36 +63,36 @@
       this.lblIDContent = new System.Windows.Forms.Label();
       this.lblID = new System.Windows.Forms.Label();
       this.tabPageAchievementInspector = new System.Windows.Forms.TabPage();
+      this.lblDateEarnedHardcoreContent = new System.Windows.Forms.Label();
+      this.lblDateEarnedContent = new System.Windows.Forms.Label();
+      this.lblMemAddrContent = new System.Windows.Forms.Label();
+      this.lblDateCreatedContent = new System.Windows.Forms.Label();
+      this.lblDateModifiedContent = new System.Windows.Forms.Label();
+      this.lblAuthorContent = new System.Windows.Forms.Label();
+      this.lblTrueRatioContent = new System.Windows.Forms.Label();
+      this.lblPointsContent = new System.Windows.Forms.Label();
+      this.lblDescriptionContent = new System.Windows.Forms.Label();
+      this.lblAchTitleContent = new System.Windows.Forms.Label();
+      this.lblNumAwardedHardcoreContent = new System.Windows.Forms.Label();
+      this.lblNumAwardedContent = new System.Windows.Forms.Label();
+      this.lblAchIDContent = new System.Windows.Forms.Label();
+      this.lblDateEarnedHardcore = new System.Windows.Forms.Label();
+      this.lblDateEarned = new System.Windows.Forms.Label();
+      this.lblMemAddr = new System.Windows.Forms.Label();
+      this.lblDateCreated = new System.Windows.Forms.Label();
+      this.lblDateModified = new System.Windows.Forms.Label();
+      this.lblAuthor = new System.Windows.Forms.Label();
+      this.lblTrueRatio = new System.Windows.Forms.Label();
+      this.lblPoints = new System.Windows.Forms.Label();
+      this.lblDescription = new System.Windows.Forms.Label();
+      this.lblAchTitle = new System.Windows.Forms.Label();
+      this.lblNumAwardedHardcore = new System.Windows.Forms.Label();
+      this.lblNumAwarded = new System.Windows.Forms.Label();
+      this.lblAchID = new System.Windows.Forms.Label();
       this.comboBoxAchievement = new System.Windows.Forms.ComboBox();
       this.lblSelectAchievement = new System.Windows.Forms.Label();
-      this.lblAchID = new System.Windows.Forms.Label();
-      this.lblNumAwarded = new System.Windows.Forms.Label();
-      this.lblNumAwardedHardcore = new System.Windows.Forms.Label();
-      this.lblAchTitle = new System.Windows.Forms.Label();
-      this.lblDescription = new System.Windows.Forms.Label();
-      this.lblPoints = new System.Windows.Forms.Label();
-      this.lblTrueRatio = new System.Windows.Forms.Label();
-      this.lblAuthor = new System.Windows.Forms.Label();
-      this.lblDateModified = new System.Windows.Forms.Label();
-      this.lblDateCreated = new System.Windows.Forms.Label();
-      this.lblMemAddr = new System.Windows.Forms.Label();
-      this.lblDateEarned = new System.Windows.Forms.Label();
-      this.lblDateEarnedHardcore = new System.Windows.Forms.Label();
-      this.lblAchIDContent = new System.Windows.Forms.Label();
-      this.lblNumAwardedContent = new System.Windows.Forms.Label();
-      this.lblNumAwardedHardcoreContent = new System.Windows.Forms.Label();
-      this.lblAchTitleContent = new System.Windows.Forms.Label();
-      this.lblDescriptionContent = new System.Windows.Forms.Label();
-      this.lblPointsContent = new System.Windows.Forms.Label();
-      this.lblTrueRatioContent = new System.Windows.Forms.Label();
-      this.lblAuthorContent = new System.Windows.Forms.Label();
-      this.lblDateModifiedContent = new System.Windows.Forms.Label();
-      this.lblDateCreatedContent = new System.Windows.Forms.Label();
-      this.lblMemAddrContent = new System.Windows.Forms.Label();
-      this.lblDateEarnedContent = new System.Windows.Forms.Label();
-      this.lblDateEarnedHardcoreContent = new System.Windows.Forms.Label();
-      this.lblRichPresence = new System.Windows.Forms.Label();
-      this.linkLabelRichPresence = new System.Windows.Forms.LinkLabel();
+      this.btnFetchAll = new System.Windows.Forms.Button();
+      this.FetchAllWorker = new System.ComponentModel.BackgroundWorker();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
       this.statusStrip1.SuspendLayout();
@@ -113,6 +115,7 @@
       // 
       // panel1
       // 
+      this.panel1.Controls.Add(this.btnFetchAll);
       this.panel1.Controls.Add(this.lblSelectGame);
       this.panel1.Controls.Add(this.comboBoxConsole);
       this.panel1.Controls.Add(this.lblSelectConsole);
@@ -236,6 +239,27 @@
       this.tabPageGameInspector.TabIndex = 0;
       this.tabPageGameInspector.Text = "Game Inspector";
       this.tabPageGameInspector.UseVisualStyleBackColor = true;
+      // 
+      // linkLabelRichPresence
+      // 
+      this.linkLabelRichPresence.AutoSize = true;
+      this.linkLabelRichPresence.Location = new System.Drawing.Point(99, 208);
+      this.linkLabelRichPresence.Name = "linkLabelRichPresence";
+      this.linkLabelRichPresence.Size = new System.Drawing.Size(34, 13);
+      this.linkLabelRichPresence.TabIndex = 66;
+      this.linkLabelRichPresence.TabStop = true;
+      this.linkLabelRichPresence.Text = "Show";
+      this.linkLabelRichPresence.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelRichPresence_LinkClicked);
+      // 
+      // lblRichPresence
+      // 
+      this.lblRichPresence.AutoSize = true;
+      this.lblRichPresence.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblRichPresence.Location = new System.Drawing.Point(5, 208);
+      this.lblRichPresence.Name = "lblRichPresence";
+      this.lblRichPresence.Size = new System.Drawing.Size(94, 13);
+      this.lblRichPresence.TabIndex = 65;
+      this.lblRichPresence.Text = "Rich Presence:";
       // 
       // lblReleaseContent
       // 
@@ -450,6 +474,253 @@
       this.tabPageAchievementInspector.Text = "Achievement Inspector";
       this.tabPageAchievementInspector.UseVisualStyleBackColor = true;
       // 
+      // lblDateEarnedHardcoreContent
+      // 
+      this.lblDateEarnedHardcoreContent.AutoSize = true;
+      this.lblDateEarnedHardcoreContent.Location = new System.Drawing.Point(150, 213);
+      this.lblDateEarnedHardcoreContent.Name = "lblDateEarnedHardcoreContent";
+      this.lblDateEarnedHardcoreContent.Size = new System.Drawing.Size(41, 13);
+      this.lblDateEarnedHardcoreContent.TabIndex = 30;
+      this.lblDateEarnedHardcoreContent.Text = "label14";
+      // 
+      // lblDateEarnedContent
+      // 
+      this.lblDateEarnedContent.AutoSize = true;
+      this.lblDateEarnedContent.Location = new System.Drawing.Point(150, 195);
+      this.lblDateEarnedContent.Name = "lblDateEarnedContent";
+      this.lblDateEarnedContent.Size = new System.Drawing.Size(41, 13);
+      this.lblDateEarnedContent.TabIndex = 29;
+      this.lblDateEarnedContent.Text = "label13";
+      // 
+      // lblMemAddrContent
+      // 
+      this.lblMemAddrContent.AutoSize = true;
+      this.lblMemAddrContent.Location = new System.Drawing.Point(150, 178);
+      this.lblMemAddrContent.Name = "lblMemAddrContent";
+      this.lblMemAddrContent.Size = new System.Drawing.Size(41, 13);
+      this.lblMemAddrContent.TabIndex = 28;
+      this.lblMemAddrContent.Text = "label12";
+      // 
+      // lblDateCreatedContent
+      // 
+      this.lblDateCreatedContent.AutoSize = true;
+      this.lblDateCreatedContent.Location = new System.Drawing.Point(150, 161);
+      this.lblDateCreatedContent.Name = "lblDateCreatedContent";
+      this.lblDateCreatedContent.Size = new System.Drawing.Size(41, 13);
+      this.lblDateCreatedContent.TabIndex = 27;
+      this.lblDateCreatedContent.Text = "label11";
+      // 
+      // lblDateModifiedContent
+      // 
+      this.lblDateModifiedContent.AutoSize = true;
+      this.lblDateModifiedContent.Location = new System.Drawing.Point(150, 144);
+      this.lblDateModifiedContent.Name = "lblDateModifiedContent";
+      this.lblDateModifiedContent.Size = new System.Drawing.Size(41, 13);
+      this.lblDateModifiedContent.TabIndex = 26;
+      this.lblDateModifiedContent.Text = "label10";
+      // 
+      // lblAuthorContent
+      // 
+      this.lblAuthorContent.AutoSize = true;
+      this.lblAuthorContent.Location = new System.Drawing.Point(150, 127);
+      this.lblAuthorContent.Name = "lblAuthorContent";
+      this.lblAuthorContent.Size = new System.Drawing.Size(35, 13);
+      this.lblAuthorContent.TabIndex = 25;
+      this.lblAuthorContent.Text = "label9";
+      // 
+      // lblTrueRatioContent
+      // 
+      this.lblTrueRatioContent.AutoSize = true;
+      this.lblTrueRatioContent.Location = new System.Drawing.Point(150, 110);
+      this.lblTrueRatioContent.Name = "lblTrueRatioContent";
+      this.lblTrueRatioContent.Size = new System.Drawing.Size(35, 13);
+      this.lblTrueRatioContent.TabIndex = 24;
+      this.lblTrueRatioContent.Text = "label8";
+      // 
+      // lblPointsContent
+      // 
+      this.lblPointsContent.AutoSize = true;
+      this.lblPointsContent.Location = new System.Drawing.Point(150, 93);
+      this.lblPointsContent.Name = "lblPointsContent";
+      this.lblPointsContent.Size = new System.Drawing.Size(35, 13);
+      this.lblPointsContent.TabIndex = 23;
+      this.lblPointsContent.Text = "label7";
+      // 
+      // lblDescriptionContent
+      // 
+      this.lblDescriptionContent.AutoSize = true;
+      this.lblDescriptionContent.Location = new System.Drawing.Point(150, 76);
+      this.lblDescriptionContent.Name = "lblDescriptionContent";
+      this.lblDescriptionContent.Size = new System.Drawing.Size(35, 13);
+      this.lblDescriptionContent.TabIndex = 22;
+      this.lblDescriptionContent.Text = "label6";
+      // 
+      // lblAchTitleContent
+      // 
+      this.lblAchTitleContent.AutoSize = true;
+      this.lblAchTitleContent.Location = new System.Drawing.Point(150, 59);
+      this.lblAchTitleContent.Name = "lblAchTitleContent";
+      this.lblAchTitleContent.Size = new System.Drawing.Size(35, 13);
+      this.lblAchTitleContent.TabIndex = 21;
+      this.lblAchTitleContent.Text = "label5";
+      // 
+      // lblNumAwardedHardcoreContent
+      // 
+      this.lblNumAwardedHardcoreContent.AutoSize = true;
+      this.lblNumAwardedHardcoreContent.Location = new System.Drawing.Point(150, 42);
+      this.lblNumAwardedHardcoreContent.Name = "lblNumAwardedHardcoreContent";
+      this.lblNumAwardedHardcoreContent.Size = new System.Drawing.Size(35, 13);
+      this.lblNumAwardedHardcoreContent.TabIndex = 20;
+      this.lblNumAwardedHardcoreContent.Text = "label4";
+      // 
+      // lblNumAwardedContent
+      // 
+      this.lblNumAwardedContent.AutoSize = true;
+      this.lblNumAwardedContent.Location = new System.Drawing.Point(150, 25);
+      this.lblNumAwardedContent.Name = "lblNumAwardedContent";
+      this.lblNumAwardedContent.Size = new System.Drawing.Size(35, 13);
+      this.lblNumAwardedContent.TabIndex = 19;
+      this.lblNumAwardedContent.Text = "label3";
+      // 
+      // lblAchIDContent
+      // 
+      this.lblAchIDContent.AutoSize = true;
+      this.lblAchIDContent.Location = new System.Drawing.Point(150, 8);
+      this.lblAchIDContent.Name = "lblAchIDContent";
+      this.lblAchIDContent.Size = new System.Drawing.Size(35, 13);
+      this.lblAchIDContent.TabIndex = 18;
+      this.lblAchIDContent.Text = "label1";
+      // 
+      // lblDateEarnedHardcore
+      // 
+      this.lblDateEarnedHardcore.AutoSize = true;
+      this.lblDateEarnedHardcore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblDateEarnedHardcore.Location = new System.Drawing.Point(6, 213);
+      this.lblDateEarnedHardcore.Name = "lblDateEarnedHardcore";
+      this.lblDateEarnedHardcore.Size = new System.Drawing.Size(138, 13);
+      this.lblDateEarnedHardcore.TabIndex = 17;
+      this.lblDateEarnedHardcore.Text = "Date Earned Hardcore:";
+      // 
+      // lblDateEarned
+      // 
+      this.lblDateEarned.AutoSize = true;
+      this.lblDateEarned.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblDateEarned.Location = new System.Drawing.Point(6, 195);
+      this.lblDateEarned.Name = "lblDateEarned";
+      this.lblDateEarned.Size = new System.Drawing.Size(82, 13);
+      this.lblDateEarned.TabIndex = 16;
+      this.lblDateEarned.Text = "Date Earned:";
+      // 
+      // lblMemAddr
+      // 
+      this.lblMemAddr.AutoSize = true;
+      this.lblMemAddr.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblMemAddr.Location = new System.Drawing.Point(6, 178);
+      this.lblMemAddr.Name = "lblMemAddr";
+      this.lblMemAddr.Size = new System.Drawing.Size(117, 13);
+      this.lblMemAddr.TabIndex = 15;
+      this.lblMemAddr.Text = "Memory Conditions:";
+      // 
+      // lblDateCreated
+      // 
+      this.lblDateCreated.AutoSize = true;
+      this.lblDateCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblDateCreated.Location = new System.Drawing.Point(6, 161);
+      this.lblDateCreated.Name = "lblDateCreated";
+      this.lblDateCreated.Size = new System.Drawing.Size(75, 13);
+      this.lblDateCreated.TabIndex = 14;
+      this.lblDateCreated.Text = "Created On:";
+      // 
+      // lblDateModified
+      // 
+      this.lblDateModified.AutoSize = true;
+      this.lblDateModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblDateModified.Location = new System.Drawing.Point(6, 144);
+      this.lblDateModified.Name = "lblDateModified";
+      this.lblDateModified.Size = new System.Drawing.Size(87, 13);
+      this.lblDateModified.TabIndex = 13;
+      this.lblDateModified.Text = "Last Modified:";
+      // 
+      // lblAuthor
+      // 
+      this.lblAuthor.AutoSize = true;
+      this.lblAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblAuthor.Location = new System.Drawing.Point(6, 127);
+      this.lblAuthor.Name = "lblAuthor";
+      this.lblAuthor.Size = new System.Drawing.Size(48, 13);
+      this.lblAuthor.TabIndex = 12;
+      this.lblAuthor.Text = "Author:";
+      // 
+      // lblTrueRatio
+      // 
+      this.lblTrueRatio.AutoSize = true;
+      this.lblTrueRatio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblTrueRatio.Location = new System.Drawing.Point(6, 110);
+      this.lblTrueRatio.Name = "lblTrueRatio";
+      this.lblTrueRatio.Size = new System.Drawing.Size(71, 13);
+      this.lblTrueRatio.TabIndex = 11;
+      this.lblTrueRatio.Text = "True Ratio:";
+      // 
+      // lblPoints
+      // 
+      this.lblPoints.AutoSize = true;
+      this.lblPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblPoints.Location = new System.Drawing.Point(6, 93);
+      this.lblPoints.Name = "lblPoints";
+      this.lblPoints.Size = new System.Drawing.Size(46, 13);
+      this.lblPoints.TabIndex = 10;
+      this.lblPoints.Text = "Points:";
+      // 
+      // lblDescription
+      // 
+      this.lblDescription.AutoSize = true;
+      this.lblDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblDescription.Location = new System.Drawing.Point(6, 76);
+      this.lblDescription.Name = "lblDescription";
+      this.lblDescription.Size = new System.Drawing.Size(75, 13);
+      this.lblDescription.TabIndex = 9;
+      this.lblDescription.Text = "Description:";
+      // 
+      // lblAchTitle
+      // 
+      this.lblAchTitle.AutoSize = true;
+      this.lblAchTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblAchTitle.Location = new System.Drawing.Point(6, 59);
+      this.lblAchTitle.Name = "lblAchTitle";
+      this.lblAchTitle.Size = new System.Drawing.Size(36, 13);
+      this.lblAchTitle.TabIndex = 8;
+      this.lblAchTitle.Text = "Title:";
+      // 
+      // lblNumAwardedHardcore
+      // 
+      this.lblNumAwardedHardcore.AutoSize = true;
+      this.lblNumAwardedHardcore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblNumAwardedHardcore.Location = new System.Drawing.Point(6, 42);
+      this.lblNumAwardedHardcore.Name = "lblNumAwardedHardcore";
+      this.lblNumAwardedHardcore.Size = new System.Drawing.Size(137, 13);
+      this.lblNumAwardedHardcore.TabIndex = 7;
+      this.lblNumAwardedHardcore.Text = "NumAwardedHardcore:";
+      // 
+      // lblNumAwarded
+      // 
+      this.lblNumAwarded.AutoSize = true;
+      this.lblNumAwarded.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblNumAwarded.Location = new System.Drawing.Point(6, 25);
+      this.lblNumAwarded.Name = "lblNumAwarded";
+      this.lblNumAwarded.Size = new System.Drawing.Size(85, 13);
+      this.lblNumAwarded.TabIndex = 6;
+      this.lblNumAwarded.Text = "NumAwarded:";
+      // 
+      // lblAchID
+      // 
+      this.lblAchID.AutoSize = true;
+      this.lblAchID.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblAchID.Location = new System.Drawing.Point(6, 8);
+      this.lblAchID.Name = "lblAchID";
+      this.lblAchID.Size = new System.Drawing.Size(24, 13);
+      this.lblAchID.TabIndex = 5;
+      this.lblAchID.Text = "ID:";
+      // 
       // comboBoxAchievement
       // 
       this.comboBoxAchievement.FormattingEnabled = true;
@@ -468,273 +739,19 @@
       this.lblSelectAchievement.TabIndex = 3;
       this.lblSelectAchievement.Text = "Select Achievement:";
       // 
-      // lblAchID
+      // btnFetchAll
       // 
-      this.lblAchID.AutoSize = true;
-      this.lblAchID.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblAchID.Location = new System.Drawing.Point(6, 8);
-      this.lblAchID.Name = "lblAchID";
-      this.lblAchID.Size = new System.Drawing.Size(24, 13);
-      this.lblAchID.TabIndex = 5;
-      this.lblAchID.Text = "ID:";
+      this.btnFetchAll.Location = new System.Drawing.Point(590, 4);
+      this.btnFetchAll.Name = "btnFetchAll";
+      this.btnFetchAll.Size = new System.Drawing.Size(75, 23);
+      this.btnFetchAll.TabIndex = 57;
+      this.btnFetchAll.Text = "Fetch All";
+      this.btnFetchAll.UseVisualStyleBackColor = true;
+      this.btnFetchAll.Click += new System.EventHandler(this.btnFetchAll_Click);
       // 
-      // lblNumAwarded
+      // FetchAllWorker
       // 
-      this.lblNumAwarded.AutoSize = true;
-      this.lblNumAwarded.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblNumAwarded.Location = new System.Drawing.Point(6, 25);
-      this.lblNumAwarded.Name = "lblNumAwarded";
-      this.lblNumAwarded.Size = new System.Drawing.Size(85, 13);
-      this.lblNumAwarded.TabIndex = 6;
-      this.lblNumAwarded.Text = "NumAwarded:";
-      // 
-      // lblNumAwardedHardcore
-      // 
-      this.lblNumAwardedHardcore.AutoSize = true;
-      this.lblNumAwardedHardcore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblNumAwardedHardcore.Location = new System.Drawing.Point(6, 42);
-      this.lblNumAwardedHardcore.Name = "lblNumAwardedHardcore";
-      this.lblNumAwardedHardcore.Size = new System.Drawing.Size(137, 13);
-      this.lblNumAwardedHardcore.TabIndex = 7;
-      this.lblNumAwardedHardcore.Text = "NumAwardedHardcore:";
-      // 
-      // lblAchTitle
-      // 
-      this.lblAchTitle.AutoSize = true;
-      this.lblAchTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblAchTitle.Location = new System.Drawing.Point(6, 59);
-      this.lblAchTitle.Name = "lblAchTitle";
-      this.lblAchTitle.Size = new System.Drawing.Size(36, 13);
-      this.lblAchTitle.TabIndex = 8;
-      this.lblAchTitle.Text = "Title:";
-      // 
-      // lblDescription
-      // 
-      this.lblDescription.AutoSize = true;
-      this.lblDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblDescription.Location = new System.Drawing.Point(6, 76);
-      this.lblDescription.Name = "lblDescription";
-      this.lblDescription.Size = new System.Drawing.Size(75, 13);
-      this.lblDescription.TabIndex = 9;
-      this.lblDescription.Text = "Description:";
-      // 
-      // lblPoints
-      // 
-      this.lblPoints.AutoSize = true;
-      this.lblPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblPoints.Location = new System.Drawing.Point(6, 93);
-      this.lblPoints.Name = "lblPoints";
-      this.lblPoints.Size = new System.Drawing.Size(46, 13);
-      this.lblPoints.TabIndex = 10;
-      this.lblPoints.Text = "Points:";
-      // 
-      // lblTrueRatio
-      // 
-      this.lblTrueRatio.AutoSize = true;
-      this.lblTrueRatio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblTrueRatio.Location = new System.Drawing.Point(6, 110);
-      this.lblTrueRatio.Name = "lblTrueRatio";
-      this.lblTrueRatio.Size = new System.Drawing.Size(71, 13);
-      this.lblTrueRatio.TabIndex = 11;
-      this.lblTrueRatio.Text = "True Ratio:";
-      // 
-      // lblAuthor
-      // 
-      this.lblAuthor.AutoSize = true;
-      this.lblAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblAuthor.Location = new System.Drawing.Point(6, 127);
-      this.lblAuthor.Name = "lblAuthor";
-      this.lblAuthor.Size = new System.Drawing.Size(48, 13);
-      this.lblAuthor.TabIndex = 12;
-      this.lblAuthor.Text = "Author:";
-      // 
-      // lblDateModified
-      // 
-      this.lblDateModified.AutoSize = true;
-      this.lblDateModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblDateModified.Location = new System.Drawing.Point(6, 144);
-      this.lblDateModified.Name = "lblDateModified";
-      this.lblDateModified.Size = new System.Drawing.Size(87, 13);
-      this.lblDateModified.TabIndex = 13;
-      this.lblDateModified.Text = "Last Modified:";
-      // 
-      // lblDateCreated
-      // 
-      this.lblDateCreated.AutoSize = true;
-      this.lblDateCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblDateCreated.Location = new System.Drawing.Point(6, 161);
-      this.lblDateCreated.Name = "lblDateCreated";
-      this.lblDateCreated.Size = new System.Drawing.Size(75, 13);
-      this.lblDateCreated.TabIndex = 14;
-      this.lblDateCreated.Text = "Created On:";
-      // 
-      // lblMemAddr
-      // 
-      this.lblMemAddr.AutoSize = true;
-      this.lblMemAddr.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblMemAddr.Location = new System.Drawing.Point(6, 178);
-      this.lblMemAddr.Name = "lblMemAddr";
-      this.lblMemAddr.Size = new System.Drawing.Size(117, 13);
-      this.lblMemAddr.TabIndex = 15;
-      this.lblMemAddr.Text = "Memory Conditions:";
-      // 
-      // lblDateEarned
-      // 
-      this.lblDateEarned.AutoSize = true;
-      this.lblDateEarned.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblDateEarned.Location = new System.Drawing.Point(6, 195);
-      this.lblDateEarned.Name = "lblDateEarned";
-      this.lblDateEarned.Size = new System.Drawing.Size(82, 13);
-      this.lblDateEarned.TabIndex = 16;
-      this.lblDateEarned.Text = "Date Earned:";
-      // 
-      // lblDateEarnedHardcore
-      // 
-      this.lblDateEarnedHardcore.AutoSize = true;
-      this.lblDateEarnedHardcore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblDateEarnedHardcore.Location = new System.Drawing.Point(6, 213);
-      this.lblDateEarnedHardcore.Name = "lblDateEarnedHardcore";
-      this.lblDateEarnedHardcore.Size = new System.Drawing.Size(138, 13);
-      this.lblDateEarnedHardcore.TabIndex = 17;
-      this.lblDateEarnedHardcore.Text = "Date Earned Hardcore:";
-      // 
-      // lblAchIDContent
-      // 
-      this.lblAchIDContent.AutoSize = true;
-      this.lblAchIDContent.Location = new System.Drawing.Point(150, 8);
-      this.lblAchIDContent.Name = "lblAchIDContent";
-      this.lblAchIDContent.Size = new System.Drawing.Size(35, 13);
-      this.lblAchIDContent.TabIndex = 18;
-      this.lblAchIDContent.Text = "label1";
-      // 
-      // lblNumAwardedContent
-      // 
-      this.lblNumAwardedContent.AutoSize = true;
-      this.lblNumAwardedContent.Location = new System.Drawing.Point(150, 25);
-      this.lblNumAwardedContent.Name = "lblNumAwardedContent";
-      this.lblNumAwardedContent.Size = new System.Drawing.Size(35, 13);
-      this.lblNumAwardedContent.TabIndex = 19;
-      this.lblNumAwardedContent.Text = "label3";
-      // 
-      // lblNumAwardedHardcoreContent
-      // 
-      this.lblNumAwardedHardcoreContent.AutoSize = true;
-      this.lblNumAwardedHardcoreContent.Location = new System.Drawing.Point(150, 42);
-      this.lblNumAwardedHardcoreContent.Name = "lblNumAwardedHardcoreContent";
-      this.lblNumAwardedHardcoreContent.Size = new System.Drawing.Size(35, 13);
-      this.lblNumAwardedHardcoreContent.TabIndex = 20;
-      this.lblNumAwardedHardcoreContent.Text = "label4";
-      // 
-      // lblAchTitleContent
-      // 
-      this.lblAchTitleContent.AutoSize = true;
-      this.lblAchTitleContent.Location = new System.Drawing.Point(150, 59);
-      this.lblAchTitleContent.Name = "lblAchTitleContent";
-      this.lblAchTitleContent.Size = new System.Drawing.Size(35, 13);
-      this.lblAchTitleContent.TabIndex = 21;
-      this.lblAchTitleContent.Text = "label5";
-      // 
-      // lblDescriptionContent
-      // 
-      this.lblDescriptionContent.AutoSize = true;
-      this.lblDescriptionContent.Location = new System.Drawing.Point(150, 76);
-      this.lblDescriptionContent.Name = "lblDescriptionContent";
-      this.lblDescriptionContent.Size = new System.Drawing.Size(35, 13);
-      this.lblDescriptionContent.TabIndex = 22;
-      this.lblDescriptionContent.Text = "label6";
-      // 
-      // lblPointsContent
-      // 
-      this.lblPointsContent.AutoSize = true;
-      this.lblPointsContent.Location = new System.Drawing.Point(150, 93);
-      this.lblPointsContent.Name = "lblPointsContent";
-      this.lblPointsContent.Size = new System.Drawing.Size(35, 13);
-      this.lblPointsContent.TabIndex = 23;
-      this.lblPointsContent.Text = "label7";
-      // 
-      // lblTrueRatioContent
-      // 
-      this.lblTrueRatioContent.AutoSize = true;
-      this.lblTrueRatioContent.Location = new System.Drawing.Point(150, 110);
-      this.lblTrueRatioContent.Name = "lblTrueRatioContent";
-      this.lblTrueRatioContent.Size = new System.Drawing.Size(35, 13);
-      this.lblTrueRatioContent.TabIndex = 24;
-      this.lblTrueRatioContent.Text = "label8";
-      // 
-      // lblAuthorContent
-      // 
-      this.lblAuthorContent.AutoSize = true;
-      this.lblAuthorContent.Location = new System.Drawing.Point(150, 127);
-      this.lblAuthorContent.Name = "lblAuthorContent";
-      this.lblAuthorContent.Size = new System.Drawing.Size(35, 13);
-      this.lblAuthorContent.TabIndex = 25;
-      this.lblAuthorContent.Text = "label9";
-      // 
-      // lblDateModifiedContent
-      // 
-      this.lblDateModifiedContent.AutoSize = true;
-      this.lblDateModifiedContent.Location = new System.Drawing.Point(150, 144);
-      this.lblDateModifiedContent.Name = "lblDateModifiedContent";
-      this.lblDateModifiedContent.Size = new System.Drawing.Size(41, 13);
-      this.lblDateModifiedContent.TabIndex = 26;
-      this.lblDateModifiedContent.Text = "label10";
-      // 
-      // lblDateCreatedContent
-      // 
-      this.lblDateCreatedContent.AutoSize = true;
-      this.lblDateCreatedContent.Location = new System.Drawing.Point(150, 161);
-      this.lblDateCreatedContent.Name = "lblDateCreatedContent";
-      this.lblDateCreatedContent.Size = new System.Drawing.Size(41, 13);
-      this.lblDateCreatedContent.TabIndex = 27;
-      this.lblDateCreatedContent.Text = "label11";
-      // 
-      // lblMemAddrContent
-      // 
-      this.lblMemAddrContent.AutoSize = true;
-      this.lblMemAddrContent.Location = new System.Drawing.Point(150, 178);
-      this.lblMemAddrContent.Name = "lblMemAddrContent";
-      this.lblMemAddrContent.Size = new System.Drawing.Size(41, 13);
-      this.lblMemAddrContent.TabIndex = 28;
-      this.lblMemAddrContent.Text = "label12";
-      // 
-      // lblDateEarnedContent
-      // 
-      this.lblDateEarnedContent.AutoSize = true;
-      this.lblDateEarnedContent.Location = new System.Drawing.Point(150, 195);
-      this.lblDateEarnedContent.Name = "lblDateEarnedContent";
-      this.lblDateEarnedContent.Size = new System.Drawing.Size(41, 13);
-      this.lblDateEarnedContent.TabIndex = 29;
-      this.lblDateEarnedContent.Text = "label13";
-      // 
-      // lblDateEarnedHardcoreContent
-      // 
-      this.lblDateEarnedHardcoreContent.AutoSize = true;
-      this.lblDateEarnedHardcoreContent.Location = new System.Drawing.Point(150, 213);
-      this.lblDateEarnedHardcoreContent.Name = "lblDateEarnedHardcoreContent";
-      this.lblDateEarnedHardcoreContent.Size = new System.Drawing.Size(41, 13);
-      this.lblDateEarnedHardcoreContent.TabIndex = 30;
-      this.lblDateEarnedHardcoreContent.Text = "label14";
-      // 
-      // lblRichPresence
-      // 
-      this.lblRichPresence.AutoSize = true;
-      this.lblRichPresence.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblRichPresence.Location = new System.Drawing.Point(5, 208);
-      this.lblRichPresence.Name = "lblRichPresence";
-      this.lblRichPresence.Size = new System.Drawing.Size(94, 13);
-      this.lblRichPresence.TabIndex = 65;
-      this.lblRichPresence.Text = "Rich Presence:";
-      // 
-      // linkLabelRichPresence
-      // 
-      this.linkLabelRichPresence.AutoSize = true;
-      this.linkLabelRichPresence.Location = new System.Drawing.Point(99, 208);
-      this.linkLabelRichPresence.Name = "linkLabelRichPresence";
-      this.linkLabelRichPresence.Size = new System.Drawing.Size(34, 13);
-      this.linkLabelRichPresence.TabIndex = 66;
-      this.linkLabelRichPresence.TabStop = true;
-      this.linkLabelRichPresence.Text = "Show";
-      this.linkLabelRichPresence.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelRichPresence_LinkClicked);
+      this.FetchAllWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.FetchAllWorker_DoWork);
       // 
       // RAInformer
       // 
@@ -825,6 +842,8 @@
     private System.Windows.Forms.Label lblAchID;
     private System.Windows.Forms.Label lblRichPresence;
     private System.Windows.Forms.LinkLabel linkLabelRichPresence;
+    private System.Windows.Forms.Button btnFetchAll;
+    private System.ComponentModel.BackgroundWorker FetchAllWorker;
   }
 }
 
