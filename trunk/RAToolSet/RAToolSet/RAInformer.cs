@@ -14,7 +14,8 @@ namespace RAToolSet
   {
     GetConsoleIDs,
     GetGameList,
-    GetGameExtended
+    GetGameExtended,
+    GetAchievementCount
   }
 
   public partial class RAInformer : Form
@@ -32,6 +33,12 @@ namespace RAToolSet
     public RAInformer()
     {
       InitializeComponent();
+      if(RAToolSet.Properties.Settings.Default.Username == "" || RAToolSet.Properties.Settings.Default.APIKey == "")
+      {
+        OptionsForm o = new OptionsForm();
+        o.ShowDialog();
+      }
+
       getConsolesWorker.RunWorkerAsync();
     }
 
@@ -43,11 +50,11 @@ namespace RAToolSet
     /// <returns>Response from the WebRequest.</returns>
     private string GetWebRequestString(APIFunction apiFunction, string argument)
     {
-      var request = WebRequest.Create("http://54.77.113.119/API/API_" + apiFunction.ToString() + ".php?z=coczero&y=AEwHP8tc6G9JaUweJl3zMZq2CRj2uIPV&i=" + argument);
+      var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=" + RAToolSet.Properties.Settings.Default.Username + "&y=" + RAToolSet.Properties.Settings.Default.APIKey + "&i=" + argument);
       request.Proxy = new WebProxy();
       string text;
       var response = (HttpWebResponse)request.GetResponse();
-
+      
       using (var sr = new StreamReader(response.GetResponseStream()))
       {
         text = sr.ReadToEnd();
@@ -149,8 +156,6 @@ namespace RAToolSet
     /// <summary>
     /// Downloads the game list for the newly selected console, if not already done.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void comboBoxConsole_SelectedIndexChanged(object sender, EventArgs e)
     {
       comboBoxGame.Items.Clear();
@@ -172,8 +177,6 @@ namespace RAToolSet
     /// <summary>
     /// Downloads the game info for the newly selected game, if not already done.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void comboBoxGame_SelectedIndexChanged(object sender, EventArgs e)
     {
       Game g = GetGameByName(comboBoxGame.SelectedItem.ToString());
@@ -196,8 +199,6 @@ namespace RAToolSet
     /// <summary>
     /// Worker to fetch all consoles
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void getConsolesWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
       Invoke(new Action(() =>
@@ -236,7 +237,6 @@ namespace RAToolSet
     /// <summary>
     /// Gets the game info for all given game IDs
     /// </summary>
-    /// <param name="sender"></param>
     /// <param name="e">Game ID to get info for</param>
     private void getGameInfoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
@@ -264,6 +264,7 @@ namespace RAToolSet
       GetConsoleByID(g.ConsoleID).Games.Add(g);
       PrintGameInfo(g);
       _fullyFetchedGames.Add(g.ID);
+      _database.InsertGame(g);
 
       Invoke(new Action(() =>
       {
@@ -278,7 +279,6 @@ namespace RAToolSet
     /// <summary>
     /// Gets the game list of the specified console ID.
     /// </summary>
-    /// <param name="sender"></param>
     /// <param name="e">Console ID to get game list for.</param>
     private void getGameListWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
@@ -319,6 +319,10 @@ namespace RAToolSet
 
         foreach (Game g in c.Games)
         {
+          //only the case if the console has 0 games.
+          if (g == null)
+            return;
+
           if (g.Title != null)
             comboBoxGame.Items.Add(g.Title);
           else
@@ -334,8 +338,6 @@ namespace RAToolSet
     /// <summary>
     /// Opens the forum thread of the currently displayed game.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void linklblForumPost_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       if (comboBoxGame.SelectedItem != null)
@@ -352,8 +354,6 @@ namespace RAToolSet
     /// <summary>
     /// Opens the ImageForm with the images of the currently displayed game.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void linklblImages_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       if (comboBoxGame.SelectedItem != null)
@@ -370,8 +370,6 @@ namespace RAToolSet
     /// <summary>
     /// Updates the label with the infos from the selected achievement.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void comboBoxAchievement_SelectedIndexChanged(object sender, EventArgs e)
     {
       Achievement a = GetGameByName(comboBoxGame.SelectedItem.ToString()).Achievements.ElementAt(comboBoxAchievement.SelectedIndex).Value;
@@ -390,6 +388,9 @@ namespace RAToolSet
       //date earned hc
     }
 
+    /// <summary>
+    /// Opens the RichPresenceForm and shows the rich presence of this game.
+    /// </summary>
     private void linkLabelRichPresence_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       if (comboBoxGame.SelectedItem != null)
@@ -419,14 +420,14 @@ namespace RAToolSet
 
       foreach (Console c in _consoleList)
       {
-        foreach (Game g in c.Games)
+        for (int i = 0; i < c.Games.Count; i++)
         {
           while (getGameInfoWorker.IsBusy)
           {
             Thread.Sleep(1);
           }
 
-          getGameInfoWorker.RunWorkerAsync(g.ID);
+          getGameInfoWorker.RunWorkerAsync(c.Games[i].ID);
         }
       }
     }

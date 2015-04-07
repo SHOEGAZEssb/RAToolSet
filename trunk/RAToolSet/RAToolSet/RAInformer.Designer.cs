@@ -32,6 +32,7 @@
       this.getConsolesWorker = new System.ComponentModel.BackgroundWorker();
       this.getGameListWorker = new System.ComponentModel.BackgroundWorker();
       this.panel1 = new System.Windows.Forms.Panel();
+      this.btnFetchAll = new System.Windows.Forms.Button();
       this.lblSelectGame = new System.Windows.Forms.Label();
       this.comboBoxConsole = new System.Windows.Forms.ComboBox();
       this.lblSelectConsole = new System.Windows.Forms.Label();
@@ -91,7 +92,6 @@
       this.lblAchID = new System.Windows.Forms.Label();
       this.comboBoxAchievement = new System.Windows.Forms.ComboBox();
       this.lblSelectAchievement = new System.Windows.Forms.Label();
-      this.btnFetchAll = new System.Windows.Forms.Button();
       this.FetchAllWorker = new System.ComponentModel.BackgroundWorker();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
@@ -126,6 +126,16 @@
       this.panel1.Name = "panel1";
       this.panel1.Size = new System.Drawing.Size(669, 31);
       this.panel1.TabIndex = 1;
+      // 
+      // btnFetchAll
+      // 
+      this.btnFetchAll.Location = new System.Drawing.Point(590, 4);
+      this.btnFetchAll.Name = "btnFetchAll";
+      this.btnFetchAll.Size = new System.Drawing.Size(75, 23);
+      this.btnFetchAll.TabIndex = 57;
+      this.btnFetchAll.Text = "Fetch All";
+      this.btnFetchAll.UseVisualStyleBackColor = true;
+      this.btnFetchAll.Click += new System.EventHandler(this.btnFetchAll_Click);
       // 
       // lblSelectGame
       // 
@@ -738,16 +748,6 @@
       this.lblSelectAchievement.Size = new System.Drawing.Size(105, 13);
       this.lblSelectAchievement.TabIndex = 3;
       this.lblSelectAchievement.Text = "Select Achievement:";
-      // 
-      // btnFetchAll
-      // 
-      this.btnFetchAll.Location = new System.Drawing.Point(590, 4);
-      this.btnFetchAll.Name = "btnFetchAll";
-      this.btnFetchAll.Size = new System.Drawing.Size(75, 23);
-      this.btnFetchAll.TabIndex = 57;
-      this.btnFetchAll.Text = "Fetch All";
-      this.btnFetchAll.UseVisualStyleBackColor = true;
-      this.btnFetchAll.Click += new System.EventHandler(this.btnFetchAll_Click);
       // 
       // FetchAllWorker
       // 
