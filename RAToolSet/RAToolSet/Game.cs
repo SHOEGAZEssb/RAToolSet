@@ -213,7 +213,7 @@ namespace RAToolSet
     public Dictionary<int, Achievement> Achievements
     {
       get { return _achievements; }
-      private set { _achievements = value; }
+      set { _achievements = value; } //TODO: safety
     }
 
     public Image ImageIcon

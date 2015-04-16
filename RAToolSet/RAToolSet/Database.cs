@@ -1,4 +1,6 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Diagnostics;
 
 namespace RAToolSet
@@ -31,7 +33,7 @@ namespace RAToolSet
 
       //Add tables if they dont exist
       SQLiteCommand cmd = new SQLiteCommand(Connection);
-      cmd.CommandText = "CREATE TABLE IF NOT EXISTS Games ( ID INTEGER PRIMARY KEY ASC, Title TEXT, ConsoleID INTEGER, Flags TEXT, ImageIconString TEXT, " +
+      cmd.CommandText = "CREATE TABLE IF NOT EXISTS Games ( ID INTEGER PRIMARY KEY ASC, Title TEXT, ConsoleID INTEGER, ForumTopicID INTEGER, Flags TEXT, ImageIconString TEXT, " +
                         "ImageTitleString TEXT, ImageIngameString TEXT, ImageBoxArtString TEXT, Publisher TEXT, Developer TEXT, Genre TEXT, Released TEXT, " +
                         "IsFinal BOOLEAN, ConsoleName TEXT, RichPresencePatch TEXT, NumAchievements INTEGER, NumDistinctPlayersCasual INTEGER, NumDistinctPlayersHardcore INTEGER);";
       cmd.ExecuteNonQuery();
@@ -40,6 +42,43 @@ namespace RAToolSet
                         "Description TEXT, Points INTEGER, TrueRatio INTEGER, Author TEXT, DateModified TEXT, DateCreated TEXT, BadgeID INTEGER, DisplayOrder INTEGER, MemAddr TEXT);";
       cmd.ExecuteNonQuery();
       cmd.Dispose();
+    }
+
+    public List<Game> GetGames()
+    {
+      SQLiteCommand cmd = new SQLiteCommand(Connection);
+      cmd.CommandText = "SELECT * FROM Games;";
+      SQLiteDataReader reader = cmd.ExecuteReader();
+
+      List<Game> gameList = new List<Game>();
+
+      while (reader.Read())
+      {
+          gameList.Add(new Game(int.Parse(reader[0].ToString()), reader[1].ToString(), int.Parse(reader[2].ToString()), int.Parse(reader[3].ToString()), reader[4].ToString(), reader[5].ToString(), 
+                        reader[6].ToString(), reader[7].ToString(), reader[8].ToString(), reader[9].ToString(), reader[10].ToString(), reader[11].ToString(), reader[12].ToString(), 
+                        bool.Parse(reader[13].ToString()), reader[14].ToString(), reader[15].ToString(), int.Parse(reader[16].ToString()), int.Parse(reader[17].ToString()), int.Parse(reader[18].ToString())));
+      }
+
+      reader.Dispose();
+
+      foreach(Game g in gameList)
+      {
+        cmd.CommandText = "SELECT * FROM Achievements WHERE GameID = " + g.ID + ";";
+        reader = cmd.ExecuteReader();
+
+        Dictionary<int, Achievement> achievementList = new Dictionary<int, Achievement>();
+        while(reader.Read())
+        {
+          //skip 4 because it is the gameID, which only exists in the DB.
+          achievementList.Add(int.Parse(reader[0].ToString()), new Achievement(int.Parse(reader[0].ToString()), int.Parse(reader[1].ToString()), int.Parse(reader[2].ToString()), reader[3].ToString(), 
+                              reader[5].ToString(), int.Parse(reader[6].ToString()), int.Parse(reader[7].ToString()), reader[8].ToString(), reader[9].ToString(), reader[10].ToString(), 
+                              int.Parse(reader[11].ToString()), int.Parse(reader[12].ToString()), reader[13].ToString()));
+        }
+
+        g.Achievements = achievementList;
+      }
+
+      return gameList;
     }
 
     /// <summary>
@@ -59,10 +98,10 @@ namespace RAToolSet
       string developer = EscapeSpecialCharacters(g.Developer);
       string richPresencePatch = EscapeSpecialCharacters(g.RichPresencePatch);
 
-      cmd.CommandText = "INSERT OR REPLACE INTO Games(ID, Title, ConsoleID, Flags, ImageIconString, ImageTitleString, ImageIngameString, ImageBoxArtString, " +
+      cmd.CommandText = "INSERT OR REPLACE INTO Games(ID, Title, ConsoleID, ForumTopicID, Flags, ImageIconString, ImageTitleString, ImageIngameString, ImageBoxArtString, " +
                         "Publisher, Developer, Genre, Released, IsFinal, ConsoleName, RichPresencePatch, NumAchievements, NumDistinctPlayersCasual, " +
                         "NumDistinctPlayersHardcore) " +
-                        "VALUES('" + g.ID + "'," + "'" + title + "'," + "'" + g.ConsoleID + "'," + "'" + g.Flags + "'," + "'" + g.ImageIconString + "'," +
+                        "VALUES('" + g.ID + "'," + "'" + title + "'," + "'" + g.ConsoleID + "'," + "'" + g.ForumTopicID + "'," + "'" + g.Flags + "'," + "'" + g.ImageIconString + "'," +
                         "'" + g.ImageTitleString + "'," + "'" + g.ImageIngameString + "'," + "'" + g.ImageBoxArtString + "'," + "'" + publisher + "'," +
                         "'" + developer + "'," + "'" + genre + "'," + "'" + g.Released + "'," + "'" + g.IsFinal + "'," + "'" + g.ConsoleName + "'," +
                         "'" + richPresencePatch + "'," + "'" + g.NumAchievements + "'," + "'" + g.NumDistinctPlayersCasual + "'," +
@@ -74,7 +113,7 @@ namespace RAToolSet
       watch.Reset();
       watch.Start();
 
-      if (g.Achievements.Count != 0)
+      if (g.Achievements != null || g.Achievements.Count != 0)
       {
         cmd.CommandText = "INSERT OR REPLACE INTO Achievements(ID, NumAwarded, NumAwardedHardcore, Title, GameID, Description, Points, TrueRatio, Author, DateModified, " +
                             "DateCreated, BadgeID, DisplayOrder, MemAddr) VALUES";
