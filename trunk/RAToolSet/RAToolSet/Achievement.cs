@@ -136,6 +136,9 @@
       private set { _memAddr = value; }
     }
 
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public Achievement(int id, int numAwarded, int numAwardedHardcore, string title, string description, int points, int trueRatio, string author,
                        string dateModified, string dateCreated, int badgeID, int displayOrder, string memAddr)                       
     {
