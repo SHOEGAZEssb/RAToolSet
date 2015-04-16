@@ -76,6 +76,7 @@ namespace RAToolSet
         }
 
         g.Achievements = achievementList;
+        reader.Dispose();
       }
 
       return gameList;

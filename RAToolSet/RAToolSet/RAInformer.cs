@@ -10,6 +10,9 @@ using System.Threading;
 
 namespace RAToolSet
 {
+  /// <summary>
+  /// Enum which contains all available functions of the RA web api.
+  /// </summary>
   public enum APIFunction
   {
     GetConsoleIDs,
@@ -18,12 +21,27 @@ namespace RAToolSet
     GetAchievementCount
   }
 
+  /// <summary>
+  /// Represents the main form.
+  /// </summary>
   public partial class RAInformer : Form
   {
+    /// <summary>
+    /// Game list dictionary. Key is a console ID and value is a list of games.
+    /// </summary>
     private Dictionary<int, List<Game>> _gameList = new Dictionary<int, List<Game>>();
+
+    /// <summary>
+    /// List of consoles.
+    /// </summary>
     private List<Console> _consoleList = new List<Console>();
+
     private Stopwatch _watch = new Stopwatch();
     private Database _database = new Database();
+
+    /// <summary>
+    /// Games whose full infos have been fetched.
+    /// </summary>
     private List<int> _fullyFetchedGames = new List<int>();
 
     /// <summary>
@@ -41,6 +59,9 @@ namespace RAToolSet
       getConsolesWorker.RunWorkerAsync();
     }
 
+    /// <summary>
+    /// Reads the games from the database.
+    /// </summary>
     private void GetGamesFromDatabase()
     {
       foreach(Game g in _database.GetGames())

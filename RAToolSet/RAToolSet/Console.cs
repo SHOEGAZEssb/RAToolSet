@@ -38,6 +38,9 @@ namespace RAToolSet
       private set { _games = value; }
     }
 
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public Console(int id, string name)
     {
       ID = id;
