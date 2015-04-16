@@ -20,7 +20,6 @@ namespace RAToolSet
 
   public partial class RAInformer : Form
   {
-    private Dictionary<int, string> _consoles = new Dictionary<int, string>();
     private Dictionary<int, List<Game>> _gameList = new Dictionary<int, List<Game>>();
     private List<Console> _consoleList = new List<Console>();
     private Stopwatch _watch = new Stopwatch();
@@ -40,6 +39,16 @@ namespace RAToolSet
       }
 
       getConsolesWorker.RunWorkerAsync();
+    }
+
+    private void GetGamesFromDatabase()
+    {
+      foreach(Game g in _database.GetGames())
+      {
+        _gameList[g.ConsoleID].Add(g);
+        _fullyFetchedGames.Add(g.ID);
+        _consoleList[g.ConsoleID].Games.Add(g);
+      }   
     }
 
     /// <summary>
@@ -184,6 +193,7 @@ namespace RAToolSet
         FetchGameInfo(g.ID);
       else
       {
+        g = _gameList[g.ConsoleID].Where<Game>(i => i.ID == g.ID).FirstOrDefault();
         PrintGameInfo(g);
 
         comboBoxAchievement.Items.Clear();
@@ -228,7 +238,7 @@ namespace RAToolSet
       }
 
       //Initialize GameList Dicitonary
-      for (int i = 1; i <= _consoles.Count; i++)
+      for (int i = 1; i <= _consoleList.Count; i++)
       {
         _gameList.Add(i, new List<Game>());
       }
@@ -430,6 +440,14 @@ namespace RAToolSet
           getGameInfoWorker.RunWorkerAsync(c.Games[i].ID);
         }
       }
+    }
+
+    /// <summary>
+    /// Once the consoles are fetched (to fill the _consoleList dictionary) the games saved in the database are deserialized
+    /// </summary>
+    private void getConsolesWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+    {
+      GetGamesFromDatabase();
     }
   }
 }

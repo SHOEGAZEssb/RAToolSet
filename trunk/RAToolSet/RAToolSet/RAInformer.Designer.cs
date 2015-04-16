@@ -108,6 +108,7 @@
       // getConsolesWorker
       // 
       this.getConsolesWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.getConsolesWorker_DoWork);
+      this.getConsolesWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.getConsolesWorker_RunWorkerCompleted);
       // 
       // getGameListWorker
       // 
