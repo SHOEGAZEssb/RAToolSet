@@ -48,6 +48,10 @@ namespace RAToolSet
       Games = new List<Game>();
     }
 
+    /// <summary>
+    /// Adds a game to this console.
+    /// </summary>
+    /// <param name="game">Game to add.</param>
     public void AddGame(Game game)
     {
       foreach(Game g in Games)

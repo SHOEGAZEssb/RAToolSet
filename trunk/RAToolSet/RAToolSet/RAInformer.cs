@@ -36,6 +36,9 @@ namespace RAToolSet
     /// </summary>
     private List<Console> _consoleList = new List<Console>();
 
+    /// <summary>
+    /// Stopwatch used for measuring the time of functions.
+    /// </summary>
     private Stopwatch _watch = new Stopwatch();
 
     /// <summary>
@@ -420,11 +423,19 @@ namespace RAToolSet
       }
     }
 
+    /// <summary>
+    /// Starts the backgroundWorker that fetches all data.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void btnFetchAll_Click(object sender, EventArgs e)
     {
       FetchAllWorker.RunWorkerAsync();
     }
 
+    /// <summary>
+    /// Fetches all data.
+    /// </summary>
     private void FetchAllWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
       foreach (Console c in _consoleList)
