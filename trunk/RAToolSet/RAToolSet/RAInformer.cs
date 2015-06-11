@@ -37,7 +37,6 @@ namespace RAToolSet
     private List<Console> _consoleList = new List<Console>();
 
     private Stopwatch _watch = new Stopwatch();
-    private Database _database = new Database();
 
     /// <summary>
     /// Games whose full infos have been fetched.
@@ -57,19 +56,6 @@ namespace RAToolSet
       }
 
       getConsolesWorker.RunWorkerAsync();
-    }
-
-    /// <summary>
-    /// Reads the games from the database.
-    /// </summary>
-    private void GetGamesFromDatabase()
-    {
-      foreach(Game g in _database.GetGames())
-      {
-        _gameList[g.ConsoleID].Add(g);
-        _fullyFetchedGames.Add(g.ID);
-        _consoleList[g.ConsoleID].Games.Add(g);
-      }   
     }
 
     /// <summary>
@@ -295,16 +281,20 @@ namespace RAToolSet
       GetConsoleByID(g.ConsoleID).Games.Add(g);
       PrintGameInfo(g);
       _fullyFetchedGames.Add(g.ID);
-      _database.InsertGame(g);
 
-      Invoke(new Action(() =>
+      if (g.Achievements != null) // for some reason now the dictionary does not get inizialized when no cheevos exist.
       {
-        comboBoxAchievement.Items.Clear();
-        foreach (Achievement a in g.Achievements.Values)
+        Invoke(new Action(() =>
         {
-          comboBoxAchievement.Items.Add(a.Title);
-        }
-      }));
+          comboBoxAchievement.Items.Clear();
+          foreach (Achievement a in g.Achievements.Values)
+          {
+            comboBoxAchievement.Items.Add(a.Title);
+          }
+        }));
+      }
+      else
+        g.Achievements = new Dictionary<int, Achievement>();
     }
 
     /// <summary>
@@ -335,7 +325,7 @@ namespace RAToolSet
       {
         try
         {
-          c.Games.Add(JsonConvert.DeserializeObject<Game>(game));
+          c.AddGame((JsonConvert.DeserializeObject<Game>(game)));
         }
         catch
         {
@@ -461,14 +451,6 @@ namespace RAToolSet
           getGameInfoWorker.RunWorkerAsync(c.Games[i].ID);
         }
       }
-    }
-
-    /// <summary>
-    /// Once the consoles are fetched (to fill the _consoleList dictionary) the games saved in the database are deserialized
-    /// </summary>
-    private void getConsolesWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-    {
-      GetGamesFromDatabase();
     }
   }
 }

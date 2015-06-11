@@ -47,5 +47,16 @@ namespace RAToolSet
       Name = name;
       Games = new List<Game>();
     }
+
+    public void AddGame(Game game)
+    {
+      foreach(Game g in Games)
+      {
+        if (g.ID == game.ID)
+          return; //do not add probably already fetched
+      }
+
+      Games.Add(game);
+    }
   }
 }
