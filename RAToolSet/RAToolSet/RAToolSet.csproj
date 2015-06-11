@@ -57,7 +57,6 @@
   <ItemGroup>
     <Compile Include="Achievement.cs" />
     <Compile Include="Console.cs" />
-    <Compile Include="Database.cs" />
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
     </Compile>
