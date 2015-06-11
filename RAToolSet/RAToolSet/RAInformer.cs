@@ -199,16 +199,15 @@ namespace RAToolSet
       if (!_fullyFetchedGames.Contains(g.ID))
         FetchGameInfo(g.ID);
       else
-      {
         g = _gameList[g.ConsoleID].Where<Game>(i => i.ID == g.ID).FirstOrDefault();
-        PrintGameInfo(g);
 
-        comboBoxAchievement.Items.Clear();
-        foreach (Achievement a in g.Achievements.Values)
-        {
-          comboBoxAchievement.Items.Add(a.Title);
-        }
+      comboBoxAchievement.Items.Clear();
+      foreach (Achievement a in g.Achievements.Values)
+      {
+        comboBoxAchievement.Items.Add(a.Title);
       }
+
+      PrintGameInfo(g);
     }
 
     #region WorkerMethods
@@ -279,7 +278,6 @@ namespace RAToolSet
       //Remove old game with less info and add the new one.
       GetConsoleByID(g.ConsoleID).Games.Remove((Game)GetConsoleByID(g.ConsoleID).Games.Where(i => i.ID == g.ID).FirstOrDefault());
       GetConsoleByID(g.ConsoleID).Games.Add(g);
-      PrintGameInfo(g);
       _fullyFetchedGames.Add(g.ID);
 
       if (g.Achievements != null) // for some reason now the dictionary does not get inizialized when no cheevos exist.
