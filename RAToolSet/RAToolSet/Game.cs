@@ -216,30 +216,45 @@ namespace RAToolSet
       set { _achievements = value; } //TODO: safety
     }
 
+    /// <summary>
+    /// The icon of this game.
+    /// </summary>
     public Image ImageIcon
     {
       get { return _imageIcon; }
       private set { _imageIcon = value; }
     }
 
+    /// <summary>
+    /// The titlescreen of this game.
+    /// </summary>
     public Image ImageTitle
     {
       get { return _imageTitle; }
       private set { _imageTitle = value; }
     }
 
+    /// <summary>
+    /// The gameplay screenshot of this game.
+    /// </summary>
     public Image ImageIngame
     {
       get { return _imageIngame; }
       private set { _imageIngame = value; }
     }
 
+    /// <summary>
+    /// The boxart of this game.
+    /// </summary>
     public Image ImageBoxArt
     {
       get { return _imageBoxArt; }
       private set { _imageBoxArt = value; }
     }
 
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public Game(int id, string title, int consoleID, int forumTopicID, string flags, string imageIcon, string imageTitle, string imageIngame, string imageBoxArt,
                     string publisher, string developer, string genre, string released, bool isFinal, string consoleName, string richPresencePatch,
                     int numAchievements, int numDistinctPlayersCasual, int numDistinctPlayersHardcore)
@@ -265,6 +280,9 @@ namespace RAToolSet
       NumDistinctPlayersHardcore = numDistinctPlayersHardcore;
     }
 
+    /// <summary>
+    /// Downloads all images of this game.
+    /// </summary>
     public void FetchImages()
     {
       if (ImageIcon == null) //already fetched?
