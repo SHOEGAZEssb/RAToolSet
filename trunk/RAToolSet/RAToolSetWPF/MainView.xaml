@@ -19,16 +19,17 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="10"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="10"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
     
     <Label Grid.Column="0" Content="Select Console:"/>
-    <ComboBox Grid.Column="2" ItemsSource="{Binding ConsoleList}" DisplayMemberPath="Name"/>
+    <ComboBox Grid.Column="2" SelectedItem="{Binding SelectedConsole}" ItemsSource="{Binding ConsoleList}" DisplayMemberPath="Name" />
     <Label Grid.Column="4" Content="Select Game:"/>
-    <ComboBox Grid.Column="6" Name="GameList"/>
+    <ComboBox Grid.Column="6" ItemsSource="{Binding SelectedConsole.Games}" DisplayMemberPath="Title"/>
     
 
-    <TabControl Grid.Row="2" Grid.ColumnSpan="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <TabControl Grid.Row="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
       <TabItem Header="Game Inspector">
         <Grid Background="#FFE5E5E5"/>
       </TabItem>
@@ -37,7 +38,7 @@
       </TabItem>
     </TabControl>
 
-    <StatusBar Grid.Row="3" Grid.ColumnSpan="6">
+    <StatusBar Grid.Row="3" Grid.ColumnSpan="7">
       <StatusBarItem>
         <TextBlock Name="StatusText" />
       </StatusBarItem>

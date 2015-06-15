@@ -30,8 +30,12 @@ namespace RAToolSetWPF
   {
     private ObservableCollection<Console> _consoleList;
     private string _statusText;
+    private Console _selectedConsole;
+    private Game _selectedGame;
+
     private Stopwatch _watch;
     private BackgroundWorker _getConsolesWorker;
+    private BackgroundWorker _getGameListWorker;
     private Dispatcher _dispatcher;
 
     /// <summary>
@@ -40,7 +44,32 @@ namespace RAToolSetWPF
     public ObservableCollection<Console> ConsoleList
     {
       get { return _consoleList; }
-      private set { _consoleList = value; }
+      private set 
+      { 
+        _consoleList = value;
+      }
+    }
+
+    public Console SelectedConsole
+    {
+      get { return _selectedConsole; }
+      set
+      {
+        _selectedConsole = value;
+        NotifyOfPropertyChange(() => SelectedConsole);
+
+        _getGameListWorker.RunWorkerAsync();
+      }
+    }
+
+    public Game SelectedGame
+    {
+      get { return _selectedGame; }
+      set
+      {
+        _selectedGame = value;
+        NotifyOfPropertyChange(() => SelectedGame);
+      }
     }
 
     public string StatusText
@@ -63,6 +92,9 @@ namespace RAToolSetWPF
       _getConsolesWorker = new BackgroundWorker();
       _getConsolesWorker.DoWork += new DoWorkEventHandler(getConsolesWorker_DoWork);
       _getConsolesWorker.RunWorkerAsync();
+
+      _getGameListWorker = new BackgroundWorker();
+      _getGameListWorker.DoWork += new DoWorkEventHandler(getGameListWorker_DoWork);
     }
 
     /// <summary>
@@ -116,17 +148,40 @@ namespace RAToolSetWPF
           _dispatcher.Invoke(new System.Action(() => { ConsoleList.Add(c); }));
         }
       });
+    }
 
-      //Invoke(new Action(() =>
-      //{ 
-      //  comboBoxConsole.Enabled = true;
-      //}));
+    /// <summary>
+    /// Gets the game list of the specified console ID.
+    /// </summary>
+    /// <param name="e">Console ID to get game list for.</param>
+    private void getGameListWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+    {
+      StatusText = "Getting " + SelectedConsole.Name + " Game List.";
 
-      ////Initialize GameList Dicitonary
-      //for (int i = 1; i <= _consoleList.Count; i++)
-      //{
-      //  _gameList.Add(i, new List<Game>());
-      //}
+      _watch.Reset();
+      _watch.Start();
+      string json = GetWebRequestString(APIFunction.GetGameList, SelectedConsole.ID.ToString());
+      _watch.Stop();
+
+      StatusText = "Fetched " + SelectedConsole.Name + " Game List, took " + _watch.ElapsedMilliseconds + " milliseconds.";
+
+      string[] games = json.Split(';');
+      foreach (string game in games)
+      {
+        try
+        {
+          _dispatcher.Invoke(new System.Action(() => { SelectedConsole.Games.Add((JsonConvert.DeserializeObject<Game>(game))); }));
+        }
+        catch
+        {
+          //something went wrong with parsing, check game title for ';'
+          continue;
+        }
+      }
+
+      //comboBoxGame.Enabled = true;
+
+      //SelectedGame = null;
     }
   }
 }
