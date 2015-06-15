@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Caliburn.Micro;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace RAToolSetWPF
 {
@@ -9,7 +11,7 @@ namespace RAToolSetWPF
   {
     private int _id;
     private string _name;
-    private List<Game> _games;
+    private ObservableCollection<Game> _games;
 
     /// <summary>
     /// The id of this console.
@@ -32,10 +34,13 @@ namespace RAToolSetWPF
     /// <summary>
     /// All games on this console.
     /// </summary>
-    public List<Game> Games
+    public ObservableCollection<Game> Games
     {
       get { return _games; }
-      private set { _games = value; }
+      private set 
+      { 
+        _games = value;
+      }
     }
 
     /// <summary>
@@ -45,7 +50,7 @@ namespace RAToolSetWPF
     {
       ID = id;
       Name = name;
-      Games = new List<Game>();
+      Games = new ObservableCollection<Game>();
     }
 
     /// <summary>
