@@ -1,0 +1,47 @@
+﻿<Window x:Class="RAToolSetWPF.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
+        Title="MainWindow" Height="350" Width="525">
+
+  <Grid>
+    <Grid.RowDefinitions >
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="10"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="10"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    
+    <Label Grid.Column="0" Content="Select Console:"/>
+    <ComboBox Grid.Column="2" ItemsSource="{Binding ConsoleList}" DisplayMemberPath="Name"/>
+    <Label Grid.Column="4" Content="Select Game:"/>
+    <ComboBox Grid.Column="6" Name="GameList"/>
+    
+
+    <TabControl Grid.Row="2" Grid.ColumnSpan="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <TabItem Header="Game Inspector">
+        <Grid Background="#FFE5E5E5"/>
+      </TabItem>
+      <TabItem Header="Achievement Inspector">
+        <Grid Background="#FFE5E5E5"/>
+      </TabItem>
+    </TabControl>
+
+    <StatusBar Grid.Row="3" Grid.ColumnSpan="6">
+      <StatusBarItem>
+        <TextBlock Name="StatusText" />
+      </StatusBarItem>
+    </StatusBar>
+
+  </Grid>
+</Window>
