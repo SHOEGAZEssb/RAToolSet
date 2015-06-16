@@ -26,7 +26,7 @@
     <Label Grid.Column="0" Content="Select Console:"/>
     <ComboBox Grid.Column="2" SelectedItem="{Binding SelectedConsole}" ItemsSource="{Binding ConsoleList}" DisplayMemberPath="Name" />
     <Label Grid.Column="4" Content="Select Game:"/>
-    <ComboBox Grid.Column="6" ItemsSource="{Binding SelectedConsole.Games}" DisplayMemberPath="Title"/>
+    <ComboBox Grid.Column="6" ItemsSource="{Binding SelectedConsole.Games}" DisplayMemberPath="Title" IsEnabled="{Binding GameComboBoxEnabled}"/>
     
 
     <TabControl Grid.Row="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Windows.Media;
@@ -303,16 +302,21 @@ namespace RAToolSetWPF
     /// <returns>Downloaded image.</returns>
     private ImageSource GetImage(string urlEnding)
     {
-      HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create("http://i.retroachievements.org" + urlEnding);
-      httpWebRequest.Proxy = new WebProxy();
-      HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse();
-      Stream stream = httpWebReponse.GetResponseStream();
+      if (urlEnding != null)
+      {
+        HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create("http://i.retroachievements.org" + urlEnding);
+        httpWebRequest.Proxy = new WebProxy();
+        HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse();
+        Stream stream = httpWebReponse.GetResponseStream();
 
-      var imageSource = new BitmapImage();
-      imageSource.BeginInit();
-      imageSource.StreamSource = stream;
-      imageSource.EndInit();
-      return imageSource;
+        var imageSource = new BitmapImage();
+        imageSource.BeginInit();
+        imageSource.StreamSource = stream;
+        imageSource.EndInit();
+        return imageSource;
+      }
+
+      return null;
     }
   }
 }

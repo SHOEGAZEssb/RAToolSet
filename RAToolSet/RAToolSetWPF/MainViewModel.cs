@@ -26,17 +26,41 @@ namespace RAToolSetWPF
     GetAchievementCount
   }
 
+  /// <summary>
+  /// The view model for the main view.
+  /// </summary>
   class MainViewModel : PropertyChangedBase
   {
+    #region Member
+
     private ObservableCollection<Console> _consoleList;
     private string _statusText;
     private Console _selectedConsole;
     private Game _selectedGame;
 
+    /// <summary>
+    /// Stopwatch used for measuring functions.
+    /// </summary>
     private Stopwatch _watch;
+
+    /// <summary>
+    /// Backgroundworker that fetches console data.
+    /// </summary>
     private BackgroundWorker _getConsolesWorker;
+
+    /// <summary>
+    /// Backgroundworker that fetches game lists.
+    /// </summary>
     private BackgroundWorker _getGameListWorker;
+
+    /// <summary>
+    /// The dispatcher of this thread. Used for invoking certain UI-thread calls.
+    /// </summary>
     private Dispatcher _dispatcher;
+
+    #endregion
+
+    #region Properties
 
     /// <summary>
     /// List of fetched consoles.
@@ -50,6 +74,9 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// The currently selected console in the view.
+    /// </summary>
     public Console SelectedConsole
     {
       get { return _selectedConsole; }
@@ -62,6 +89,9 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// The currently selected game in the view.
+    /// </summary>
     public Game SelectedGame
     {
       get { return _selectedGame; }
@@ -72,6 +102,9 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// The current status.
+    /// </summary>
     public string StatusText
     {
       get { return _statusText; }
@@ -82,7 +115,16 @@ namespace RAToolSetWPF
       }
     }
 
+    public bool GameComboBoxEnabled
+    {
+      get { return (SelectedConsole != null && SelectedConsole.Games.Count != 0); }
+    }
 
+    #endregion
+
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public MainViewModel()
     {
       // Initialize variables
@@ -92,7 +134,6 @@ namespace RAToolSetWPF
       _getConsolesWorker = new BackgroundWorker();
       _getConsolesWorker.DoWork += new DoWorkEventHandler(getConsolesWorker_DoWork);
       _getConsolesWorker.RunWorkerAsync();
-
       _getGameListWorker = new BackgroundWorker();
       _getGameListWorker.DoWork += new DoWorkEventHandler(getGameListWorker_DoWork);
     }
@@ -103,10 +144,15 @@ namespace RAToolSetWPF
     /// <param name="apiFunction">APIFunction to call.</param>
     /// <param name="argument">Argument to pass.</param>
     /// <returns>Response from the WebRequest.</returns>
-    private string GetWebRequestString(APIFunction apiFunction, string argument)
+    private string GetWebRequestResponse(APIFunction apiFunction, string argument)
     {
+      ServicePointManager.DefaultConnectionLimit = 20;
+      ServicePointManager.Expect100Continue = false;
+      ServicePointManager.UseNagleAlgorithm = false;
+
       //var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=" + RAToolSetWPF.Properties.Settings.Default.Username + "&y=" + RAToolSetWPF.Properties.Settings.Default.APIKey + "&i=" + argument);
       var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=coczero" + "&y=AEwHP8tc6G9JaUweJl3zMZq2CRj2uIPV" + "&i=" + argument);
+
       request.Proxy = new WebProxy();
       string text;
       var response = (HttpWebResponse)request.GetResponse();
@@ -124,6 +170,8 @@ namespace RAToolSetWPF
       return text;
     }
 
+    #region BackgroundWorker DoWork Methods
+
     /// <summary>
     /// Worker to fetch all consoles
     /// </summary>
@@ -133,7 +181,7 @@ namespace RAToolSetWPF
 
       _watch.Reset();
       _watch.Start();
-      string[] consoles = GetWebRequestString(APIFunction.GetConsoleIDs, "").Split(';');
+      string[] consoles = GetWebRequestResponse(APIFunction.GetConsoleIDs, "").Split(';');
       _watch.Stop();
 
 
@@ -153,14 +201,13 @@ namespace RAToolSetWPF
     /// <summary>
     /// Gets the game list of the specified console ID.
     /// </summary>
-    /// <param name="e">Console ID to get game list for.</param>
     private void getGameListWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
       StatusText = "Getting " + SelectedConsole.Name + " Game List.";
 
       _watch.Reset();
       _watch.Start();
-      string json = GetWebRequestString(APIFunction.GetGameList, SelectedConsole.ID.ToString());
+      string json = GetWebRequestResponse(APIFunction.GetGameList, SelectedConsole.ID.ToString());
       _watch.Stop();
 
       StatusText = "Fetched " + SelectedConsole.Name + " Game List, took " + _watch.ElapsedMilliseconds + " milliseconds.";
@@ -170,7 +217,9 @@ namespace RAToolSetWPF
       {
         try
         {
-          _dispatcher.Invoke(new System.Action(() => { SelectedConsole.Games.Add((JsonConvert.DeserializeObject<Game>(game))); }));
+          Game g = (JsonConvert.DeserializeObject<Game>(game));
+          if(g != null)
+            _dispatcher.Invoke(new System.Action(() => { SelectedConsole.Games.Add(g); }));
         }
         catch
         {
@@ -179,9 +228,9 @@ namespace RAToolSetWPF
         }
       }
 
-      //comboBoxGame.Enabled = true;
-
-      //SelectedGame = null;
+      NotifyOfPropertyChange(() => GameComboBoxEnabled);
     }
+
+    #endregion
   }
 }
