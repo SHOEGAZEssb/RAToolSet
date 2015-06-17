@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Caliburn.Micro;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Windows.Media;
@@ -30,6 +31,8 @@ namespace RAToolSetWPF
     private int _numAchievements;
     private int _numDistinctPlayersCasual;
     private int _numDistinctPlayersHardcore;
+
+    private bool _isFetched;
 
     private ImageSource _imageIcon;
     private ImageSource _imageTitle;
@@ -218,6 +221,15 @@ namespace RAToolSetWPF
     }
 
     /// <summary>
+    /// Gets/sets wether the whole game info for this game has been fetched.
+    /// </summary>
+    public bool IsFetched
+    {
+      get { return _isFetched; }
+      private set { _isFetched = value; }
+    }
+
+    /// <summary>
     /// The icon of this game.
     /// </summary>
     public ImageSource ImageIcon
@@ -296,6 +308,14 @@ namespace RAToolSetWPF
     }
 
     /// <summary>
+    /// Downlaods only the icon image of this game.
+    /// </summary>
+    public void FetchIcon()
+    {
+      ImageIcon = GetImage(ImageIconString);
+    }
+
+    /// <summary>
     /// Downloads the image from the RA website with the given parameter.
     /// </summary>
     /// <param name="urlEnding">The image to be downloaded.</param>
@@ -304,19 +324,39 @@ namespace RAToolSetWPF
     {
       if (urlEnding != null)
       {
-        HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create("http://i.retroachievements.org" + urlEnding);
-        httpWebRequest.Proxy = new WebProxy();
-        HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse();
-        Stream stream = httpWebReponse.GetResponseStream();
-
-        var imageSource = new BitmapImage();
+        BitmapImage imageSource = new BitmapImage();
         imageSource.BeginInit();
-        imageSource.StreamSource = stream;
+        imageSource.UriSource = new System.Uri("http://i.retroachievements.org" + urlEnding);
         imageSource.EndInit();
         return imageSource;
       }
 
       return null;
+    }
+
+    /// <summary>
+    /// Merges a fetched game with this game.
+    /// </summary>
+    /// <param name="g">Game to merge.</param>
+    public void MergeGame(Game g)
+    {
+      Developer = g.Developer;
+      Publisher = g.Publisher;
+      Genre = g.Genre;
+      Released = g.Released;
+      IsFinal = g.IsFinal;
+      RichPresencePatch = g.RichPresencePatch;
+      NumAchievements = g.NumAchievements;
+      NumDistinctPlayersCasual = g.NumDistinctPlayersCasual;
+      NumDistinctPlayersHardcore = g.NumDistinctPlayersHardcore;
+      Flags = g.Flags;
+      ImageBoxArtString = g.ImageBoxArtString;
+      ImageTitleString = g.ImageTitleString;
+      ImageIngameString = g.ImageIngameString;
+      ForumTopicID = g.ForumTopicID;
+
+      FetchIcon();
+      IsFetched = true;
     }
   }
 }
