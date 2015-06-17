@@ -22,16 +22,53 @@
       <ColumnDefinition Width="10"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
-    
+
     <Label Grid.Column="0" Content="Select Console:"/>
     <ComboBox Grid.Column="2" SelectedItem="{Binding SelectedConsole}" ItemsSource="{Binding ConsoleList}" DisplayMemberPath="Name" />
     <Label Grid.Column="4" Content="Select Game:"/>
-    <ComboBox Grid.Column="6" ItemsSource="{Binding SelectedConsole.Games}" DisplayMemberPath="Title" IsEnabled="{Binding GameComboBoxEnabled}"/>
-    
+    <ComboBox Grid.Column="6" ItemsSource="{Binding SelectedConsole.Games}" DisplayMemberPath="Title" IsEnabled="{Binding GameComboBoxEnabled}" 
+              SelectedItem="{Binding SelectedGame}"/>
+
 
     <TabControl Grid.Row="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
       <TabItem Header="Game Inspector">
-        <Grid Background="#FFE5E5E5"/>
+        <Grid >
+          <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+          </Grid.RowDefinitions>
+
+          <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="64" />
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <Image Grid.Column="1" Grid.Row="1" Source="{Binding SelectedGame.ImageIcon}"/>
+          <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+          <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
+          
+          <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Content="Developer:"/>
+          <Label Grid.Column="1" Grid.Row="3" Content="Publisher:"/>
+          <Label Grid.Column="1" Grid.Row="4" Content="Genre:"/>
+          <Label Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Content="First released:"/>
+
+          <Label Grid.Column="3" Grid.Row="2"  Content="{Binding SelectedGame.Developer}"/>
+          <Label Grid.Column="3" Grid.Row="3" Content="{Binding SelectedGame.Publisher}"/>
+          <Label Grid.Column="3" Grid.Row="4" Content="{Binding SelectedGame.Genre}"/>
+          <Label Grid.Column="3" Grid.Row="5"  Content="{Binding SelectedGame.Released}"/>
+
+        </Grid>
       </TabItem>
       <TabItem Header="Achievement Inspector">
         <Grid Background="#FFE5E5E5"/>

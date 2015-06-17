@@ -54,6 +54,11 @@ namespace RAToolSetWPF
     private BackgroundWorker _getGameListWorker;
 
     /// <summary>
+    /// BackgroundWorker that fetches game info.
+    /// </summary>
+    private BackgroundWorker _getGameInfoWorker;
+
+    /// <summary>
     /// The dispatcher of this thread. Used for invoking certain UI-thread calls.
     /// </summary>
     private Dispatcher _dispatcher;
@@ -98,6 +103,9 @@ namespace RAToolSetWPF
       set
       {
         _selectedGame = value;
+        if (value != null && !value.IsFetched)
+          _getGameInfoWorker.RunWorkerAsync();
+
         NotifyOfPropertyChange(() => SelectedGame);
       }
     }
@@ -136,6 +144,8 @@ namespace RAToolSetWPF
       _getConsolesWorker.RunWorkerAsync();
       _getGameListWorker = new BackgroundWorker();
       _getGameListWorker.DoWork += new DoWorkEventHandler(getGameListWorker_DoWork);
+      _getGameInfoWorker = new BackgroundWorker();
+      _getGameInfoWorker.DoWork += new DoWorkEventHandler(getGameInfoWorker_DoWork);
     }
 
     /// <summary>
@@ -184,8 +194,6 @@ namespace RAToolSetWPF
       string[] consoles = GetWebRequestResponse(APIFunction.GetConsoleIDs, "").Split(';');
       _watch.Stop();
 
-
-
       StatusText = "Fetched Console Information, took " + _watch.ElapsedMilliseconds + " milliseconds.";
 
       Dispatcher.CurrentDispatcher.Invoke(() =>
@@ -229,6 +237,61 @@ namespace RAToolSetWPF
       }
 
       NotifyOfPropertyChange(() => GameComboBoxEnabled);
+    }
+
+    /// <summary>
+    /// Gets the game info for all given game IDs
+    /// </summary>
+    /// <param name="e">Game ID to get info for</param>
+    private void getGameInfoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+    {
+      //int gameID = (int)e.Argument;
+
+      StatusText = "Getting " + SelectedGame.Title + " Game Info";
+
+      _watch.Reset();
+      _watch.Start();
+      string info = GetWebRequestResponse(APIFunction.GetGameExtended, SelectedGame.ID.ToString());
+      _watch.Stop();
+
+      StatusText = "Fetched " + SelectedGame.Title + " Game Info, took " + _watch.ElapsedMilliseconds + " milliseconds.";
+
+      // TODO: write a "merge" function to add the serialized properties to the original game
+      Game g = JsonConvert.DeserializeObject<Game>(info);
+
+
+      for(int i = 0; i < SelectedConsole.Games.Count; i++)
+      {
+        if (SelectedConsole.Games[i].ID == g.ID)
+        {
+          _dispatcher.Invoke(new System.Action(() => 
+          {
+            SelectedConsole.Games[i].MergeGame(g);       
+          }));
+          break;
+        }
+      }
+
+      NotifyOfPropertyChange(() => SelectedGame);
+
+      //Remove old game with less info and add the new one.
+      //GetConsoleByID(g.ConsoleID).Games.Remove((Game)GetConsoleByID(g.ConsoleID).Games.Where(i => i.ID == g.ID).FirstOrDefault());
+      //GetConsoleByID(g.ConsoleID).Games.Add(g);
+      //_fullyFetchedGames.Add(g.ID);
+
+      //if (g.Achievements != null) // for some reason now the dictionary does not get inizialized when no cheevos exist.
+      //{
+      //  Invoke(new Action(() =>
+      //  {
+      //    comboBoxAchievement.Items.Clear();
+      //    foreach (Achievement a in g.Achievements.Values)
+      //    {
+      //      comboBoxAchievement.Items.Add(a.Title);
+      //    }
+      //  }));
+      //}
+      //else
+      //  g.Achievements = new Dictionary<int, Achievement>();
     }
 
     #endregion
