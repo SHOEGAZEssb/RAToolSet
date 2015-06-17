@@ -119,6 +119,7 @@ namespace RAToolSetWPF
       private set
       {
         _statusText = value;
+        Logging.LogText(value);
         NotifyOfPropertyChange(() => StatusText);
       }
     }
