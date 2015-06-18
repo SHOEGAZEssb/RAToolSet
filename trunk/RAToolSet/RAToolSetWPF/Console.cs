@@ -10,6 +10,7 @@ namespace RAToolSetWPF
     private int _id;
     private string _name;
     private ObservableCollection<Game> _games;
+    private bool _isFetched;
 
     /// <summary>
     /// The id of this console.
@@ -39,6 +40,12 @@ namespace RAToolSetWPF
       { 
         _games = value;
       }
+    }
+
+    public bool IsFetched
+    {
+      get { return _isFetched; }
+      set { _isFetched = value; }
     }
 
     /// <summary>

@@ -87,10 +87,15 @@ namespace RAToolSetWPF
       get { return _selectedConsole; }
       set
       {
-        _selectedConsole = value;
-        NotifyOfPropertyChange(() => SelectedConsole);
+        if (!_getGameListWorker.IsBusy)
+        {
+          _selectedConsole = value;
 
-        _getGameListWorker.RunWorkerAsync();
+          if(value != null && !value.IsFetched)
+            _getGameListWorker.RunWorkerAsync();
+
+          NotifyOfPropertyChange(() => SelectedConsole);
+        }
       }
     }
 
@@ -102,11 +107,14 @@ namespace RAToolSetWPF
       get { return _selectedGame; }
       set
       {
-        _selectedGame = value;
-        if (value != null && !value.IsFetched)
-          _getGameInfoWorker.RunWorkerAsync();
+        if (!_getGameInfoWorker.IsBusy)
+        {
+          _selectedGame = value;
+          if (value != null && !value.IsFetched)
+            _getGameInfoWorker.RunWorkerAsync();
 
-        NotifyOfPropertyChange(() => SelectedGame);
+          NotifyOfPropertyChange(() => SelectedGame);
+        }
       }
     }
 
@@ -237,6 +245,7 @@ namespace RAToolSetWPF
         }
       }
 
+      SelectedConsole.IsFetched = true;
       NotifyOfPropertyChange(() => GameComboBoxEnabled);
     }
 
