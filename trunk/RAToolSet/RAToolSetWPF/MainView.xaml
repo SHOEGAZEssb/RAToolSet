@@ -5,6 +5,21 @@
         xmlns:cal="http://www.caliburnproject.org"
         Title="MainWindow" Height="350" Width="525">
 
+  <Window.Resources>
+    <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridStyle">
+      <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown" />
+      <EventSetter Event="PreviewTextInput" Handler="DataGridCell_PreviewTextInput" />
+    </Style>
+
+    <Style x:Key="FauxLabel" TargetType="{x:Type TextBox}">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="{x:Null}"/>
+      <Setter Property="BorderThickness" Value="4"/>
+      <Setter Property="IsTabStop" Value="False"/>
+      <Setter Property="IsReadOnly" Value="True" />
+    </Style>
+  </Window.Resources>
+
   <Grid>
     <Grid.RowDefinitions >
       <RowDefinition Height="Auto" />
@@ -54,24 +69,119 @@
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
 
-          <Image Grid.Column="1" Grid.Row="1" Source="{Binding SelectedGame.ImageIcon}"/>
+          <Image Grid.Column="1" Grid.Row="1" Source="{Binding SelectedGame.ImageIcon}" Width="64" Height="64"/>
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
-          
+
           <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Content="Developer:"/>
           <Label Grid.Column="1" Grid.Row="3" Content="Publisher:"/>
           <Label Grid.Column="1" Grid.Row="4" Content="Genre:"/>
           <Label Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Content="First released:"/>
+          <Label Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Content="Forum Topic:"/>
 
           <Label Grid.Column="3" Grid.Row="2"  Content="{Binding SelectedGame.Developer}"/>
           <Label Grid.Column="3" Grid.Row="3" Content="{Binding SelectedGame.Publisher}"/>
           <Label Grid.Column="3" Grid.Row="4" Content="{Binding SelectedGame.Genre}"/>
           <Label Grid.Column="3" Grid.Row="5"  Content="{Binding SelectedGame.Released}"/>
-
+          <TextBlock Grid.Column="3" Grid.Row="6" Margin="5,5,0,0">
+            <Hyperlink>
+              <TextBlock Text="{Binding SelectedGame.ForumTopicID}">
+                <i:Interaction.Triggers>
+                  <i:EventTrigger EventName="MouseDown">
+                    <cal:ActionMessage MethodName="ForumTopicClicked"/>
+                  </i:EventTrigger>
+                </i:Interaction.Triggers>
+              </TextBlock>
+            </Hyperlink>
+          </TextBlock>
         </Grid>
       </TabItem>
       <TabItem Header="Achievement Inspector">
-        <Grid Background="#FFE5E5E5"/>
+        <Grid>
+          
+        </Grid>
+      </TabItem>
+      <TabItem Header="Leaderboard Maker" DataContext="{Binding ConditionViewModel}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+                      SelectedIndex="{Binding SelectedTabControlIndex}">
+            <TabItem Header="Start">
+              <DataGrid x:Name="dataGrid" ItemsSource="{Binding StartConditions}" CanUserReorderColumns="False" CanUserSortColumns="False" 
+                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridStyle}"
+                        SelectedItem="{Binding SelectedStartCondition}">
+              </DataGrid>
+            </TabItem>
+            <TabItem Header="Cancel">
+              <DataGrid x:Name="dataGrid2" ItemsSource="{Binding CancelConditions}" CanUserReorderColumns="False" CanUserSortColumns="False" 
+                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridStyle}"
+                        SelectedItem="{Binding SelectedCancelCondition}">
+              </DataGrid>
+            </TabItem>
+            <TabItem Header="Submit">
+              <DataGrid x:Name="dataGrid3" ItemsSource="{Binding SubmitConditions}" CanUserReorderColumns="False" CanUserSortColumns="False" 
+                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridStyle}"
+                        SelectedItem="{Binding SelectedSubmitCondition}">
+              </DataGrid>
+            </TabItem>
+            <TabItem Header="Output">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" Content="Start:"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Cancel:"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Submit:"/>
+                
+                <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource FauxLabel}" Text="{Binding StartConditionsOutputText}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource FauxLabel}" Text="{Binding CancelConditionsOutputText}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource FauxLabel}" Text="{Binding SubmitConditionsOutputText}"/>
+              </Grid>
+            </TabItem>
+          </TabControl>
+          <Button Content="Add Condition" HorizontalAlignment="Left" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0">
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="Click">
+                <cal:ActionMessage MethodName="AddCondition"/>
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+          </Button>
+          <Button Content="Remove Condition" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+            RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1" IsEnabled="{Binding CanRemoveCondition}">
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="Click">
+                <cal:ActionMessage MethodName="RemoveCondition"/>
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+          </Button>
+
+          <Button Content="Generate" HorizontalAlignment="Left"  VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="2" IsEnabled="{Binding CanGenerate}">
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="Click">
+                <cal:ActionMessage MethodName="GenerateOutput"/>
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+          </Button>
+
+        </Grid>
       </TabItem>
     </TabControl>
 

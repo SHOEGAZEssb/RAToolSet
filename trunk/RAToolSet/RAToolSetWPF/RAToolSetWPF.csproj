@@ -76,6 +76,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Condition.cs" />
+    <Compile Include="ConditionViewModel.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="MainViewModel.cs" />
