@@ -63,6 +63,8 @@ namespace RAToolSetWPF
     /// </summary>
     private Dispatcher _dispatcher;
 
+    private ConditionViewModel _conditionViewModel;
+
     #endregion
 
     #region Properties
@@ -137,6 +139,12 @@ namespace RAToolSetWPF
       get { return (SelectedConsole != null && SelectedConsole.Games.Count != 0); }
     }
 
+    public ConditionViewModel ConditionViewModel
+    {
+      get { return _conditionViewModel; }
+      private set { _conditionViewModel = value; }
+    }
+
     #endregion
 
     /// <summary>
@@ -145,6 +153,7 @@ namespace RAToolSetWPF
     public MainViewModel()
     {
       // Initialize variables
+      ConditionViewModel = new RAToolSetWPF.ConditionViewModel();
       ConsoleList = new ObservableCollection<Console>();
       _dispatcher = Dispatcher.CurrentDispatcher;
       _watch = new Stopwatch();
@@ -187,6 +196,12 @@ namespace RAToolSetWPF
         text = text.Replace("},", "};");
 
       return text;
+    }
+
+    public void ForumTopicClicked()
+    {
+      string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + SelectedGame.ForumTopicID);
+      Process.Start(link);
     }
 
     #region BackgroundWorker DoWork Methods
@@ -283,25 +298,6 @@ namespace RAToolSetWPF
       }
 
       NotifyOfPropertyChange(() => SelectedGame);
-
-      //Remove old game with less info and add the new one.
-      //GetConsoleByID(g.ConsoleID).Games.Remove((Game)GetConsoleByID(g.ConsoleID).Games.Where(i => i.ID == g.ID).FirstOrDefault());
-      //GetConsoleByID(g.ConsoleID).Games.Add(g);
-      //_fullyFetchedGames.Add(g.ID);
-
-      //if (g.Achievements != null) // for some reason now the dictionary does not get inizialized when no cheevos exist.
-      //{
-      //  Invoke(new Action(() =>
-      //  {
-      //    comboBoxAchievement.Items.Clear();
-      //    foreach (Achievement a in g.Achievements.Values)
-      //    {
-      //      comboBoxAchievement.Items.Add(a.Title);
-      //    }
-      //  }));
-      //}
-      //else
-      //  g.Achievements = new Dictionary<int, Achievement>();
     }
 
     #endregion
