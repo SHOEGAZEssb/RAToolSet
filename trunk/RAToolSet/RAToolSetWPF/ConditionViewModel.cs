@@ -1,14 +1,12 @@
 ﻿using Caliburn.Micro;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace RAToolSetWPF
 {
+  /// <summary>
+  /// Represents the view model for the leaderboard maker.
+  /// </summary>
   class ConditionViewModel : PropertyChangedBase
   {
     private ObservableCollection<Condition> _startConditions;
@@ -88,6 +86,9 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// The output text of the start conditions.
+    /// </summary>
     public string StartConditionsOutputText
     {
       get { return _startConditionsOutputText; }
@@ -98,6 +99,9 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// The output text of the cancel conditions.
+    /// </summary>
     public string CancelConditionsOutputText
     {
       get { return _cancelConditionsOutputText; }
@@ -108,6 +112,9 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// The output text of the submit conditions.
+    /// </summary>
     public string SubmitConditionsOutputText
     {
       get { return _submitConditionsOutputText; }

@@ -3,8 +3,14 @@ using System.IO;
 
 namespace RAToolSetWPF
 {
+  /// <summary>
+  /// Static class used for logging different events.
+  /// </summary>
   public static class Logging
   {
+    /// <summary>
+    /// The path to the logfile.
+    /// </summary>
     private const string LOGGINGPATH = "..\\..\\logfile.txt";
 
     /// <summary>
