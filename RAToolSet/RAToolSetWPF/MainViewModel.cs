@@ -1,17 +1,11 @@
 ﻿using Caliburn.Micro;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
-
 
 namespace RAToolSetWPF
 {
@@ -198,6 +192,9 @@ namespace RAToolSetWPF
       return text;
     }
 
+    /// <summary>
+    /// Opens the forum topic of the selected game in the standard browser.
+    /// </summary>
     public void ForumTopicClicked()
     {
       string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + SelectedGame.ForumTopicID);
