@@ -6,11 +6,11 @@
         Title="MainWindow" Height="350" Width="525">
 
   <Window.Resources>
-    <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridStyle">
+    <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
       <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown" />
       <EventSetter Event="PreviewTextInput" Handler="DataGridCell_PreviewTextInput" />
     </Style>
-
+ 
     <Style x:Key="FauxLabel" TargetType="{x:Type TextBox}">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="BorderBrush" Value="{x:Null}"/>
@@ -69,7 +69,10 @@
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
 
-          <Image Grid.Column="1" Grid.Row="1" Source="{Binding SelectedGame.ImageIcon}" Width="64" Height="64"/>
+          <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="#FF000000" Width="64" Height="64" Margin="0,0,5,0">     
+            <Image Grid.Column="1" Grid.Row="1" Source="{Binding SelectedGame.ImageIcon}" Width="64" Height="64" />
+          </Border>
+          
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
 
@@ -98,7 +101,7 @@
       </TabItem>
       <TabItem Header="Achievement Inspector">
         <Grid>
-          
+
         </Grid>
       </TabItem>
       <TabItem Header="Leaderboard Maker" DataContext="{Binding ConditionViewModel}">
@@ -117,19 +120,19 @@
                       SelectedIndex="{Binding SelectedTabControlIndex}">
             <TabItem Header="Start">
               <DataGrid x:Name="dataGrid" ItemsSource="{Binding StartConditions}" CanUserReorderColumns="False" CanUserSortColumns="False" 
-                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridStyle}"
+                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridCellStyle}"
                         SelectedItem="{Binding SelectedStartCondition}">
               </DataGrid>
             </TabItem>
             <TabItem Header="Cancel">
               <DataGrid x:Name="dataGrid2" ItemsSource="{Binding CancelConditions}" CanUserReorderColumns="False" CanUserSortColumns="False" 
-                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridStyle}"
+                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridCellStyle}"
                         SelectedItem="{Binding SelectedCancelCondition}">
               </DataGrid>
             </TabItem>
             <TabItem Header="Submit">
               <DataGrid x:Name="dataGrid3" ItemsSource="{Binding SubmitConditions}" CanUserReorderColumns="False" CanUserSortColumns="False" 
-                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridStyle}"
+                  AutoGenerateColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CellStyle="{StaticResource DataGridCellStyle}"
                         SelectedItem="{Binding SelectedSubmitCondition}">
               </DataGrid>
             </TabItem>
@@ -139,18 +142,18 @@
                   <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <Label Grid.Row="0" Grid.Column="0" Content="Start:"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="Cancel:"/>
                 <Label Grid.Row="2" Grid.Column="0" Content="Submit:"/>
-                
+
                 <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource FauxLabel}" Text="{Binding StartConditionsOutputText}"/>
                 <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource FauxLabel}" Text="{Binding CancelConditionsOutputText}"/>
                 <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource FauxLabel}" Text="{Binding SubmitConditionsOutputText}"/>

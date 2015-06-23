@@ -76,7 +76,6 @@ namespace RAToolSetWPF
       }
     }
 
-
     private static T FindVisualParent<T>(UIElement element) where T : UIElement
     {
       UIElement parent = element;

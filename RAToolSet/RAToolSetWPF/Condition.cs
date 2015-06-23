@@ -93,7 +93,13 @@
     public string Mem1
     {
       get { return _operand1; }
-      set { _operand1 = value; }
+      set 
+      {
+        if (!value.StartsWith("0x"))
+          _operand1 = "0x" + value;
+        else
+          _operand1 = value;
+      }
     }
 
     /// <summary>
@@ -129,7 +135,13 @@
     public string Mem2
     {
       get { return _operand2; }
-      set { _operand2 = value; }
+      set 
+      {
+        if (!value.StartsWith("0x"))
+          _operand2 = "0x" + value;
+        else
+          _operand2 = value; 
+      }
     }
   }
 }
