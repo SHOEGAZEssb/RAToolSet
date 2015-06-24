@@ -31,6 +31,7 @@ namespace RAToolSetWPF
     private string _statusText;
     private Console _selectedConsole;
     private Game _selectedGame;
+    private Achievement _selectedAchievement;
 
     /// <summary>
     /// Stopwatch used for measuring functions.
@@ -111,6 +112,22 @@ namespace RAToolSetWPF
 
           NotifyOfPropertyChange(() => SelectedGame);
         }
+      }
+    }
+
+    /// <summary>
+    /// The currently selected achievement in the view.
+    /// </summary>
+    public Achievement SelectedAchievement
+    {
+      get { return _selectedAchievement; }
+      set
+      {
+        _selectedAchievement = value;
+        if(SelectedAchievement != null && SelectedAchievement.Badge == null)
+          SelectedAchievement.FetchBadge();
+
+        NotifyOfPropertyChange(() => SelectedAchievement);
       }
     }
 
