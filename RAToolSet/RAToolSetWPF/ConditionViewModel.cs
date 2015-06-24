@@ -234,7 +234,7 @@ namespace RAToolSetWPF
         {
           string mem1 = "";
 
-          if (conditions[i].Type1 == Type.Delta)
+          if (conditions[i].Type1 == MemType.Delta)
           {
             mem1 += "d";
           }
@@ -244,7 +244,7 @@ namespace RAToolSetWPF
 
           string mem2 = "";
 
-          if (conditions[i].Type2 == Type.Delta)
+          if (conditions[i].Type2 == MemType.Delta)
           {
             mem2 += "d";
           }

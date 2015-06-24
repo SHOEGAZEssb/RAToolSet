@@ -1,9 +1,10 @@
-﻿namespace RAToolSetWPF
+﻿using System.ComponentModel;
+namespace RAToolSetWPF
 {
   /// <summary>
   /// Type of an operand.
   /// </summary>
-  enum Type
+  enum MemType
   {
     /// <summary>
     /// Specifies that this operand is a memory address.
@@ -59,20 +60,20 @@
   /// </summary>
   class Condition
   {
-    private Type _operand1Type;
+    private MemType _operand1Type;
     private Size _operand1Size;
     private string _operand1;
 
     private Comparer _comparer;
 
-    private Type _operand2Type;
+    private MemType _operand2Type;
     private Size _operand2Size;
     private string _operand2;
 
     /// <summary>
-    /// The <see cref="Type"/> of the first operand.
+    /// The <see cref="MemType"/> of the first operand.
     /// </summary>
-    public Type Type1
+    public MemType Type1
     {
       get { return _operand1Type; }
       set { _operand1Type = value; }
@@ -112,9 +113,9 @@
     }
 
     /// <summary>
-    /// The <see cref="Type"/> of the second operand.
+    /// The <see cref="MemType"/> of the second operand.
     /// </summary>
-    public Type Type2
+    public MemType Type2
     {
       get { return _operand2Type; }
       set { _operand2Type = value; }
