@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Caliburn.Micro;
+using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Runtime.Serialization;
 
 namespace RAToolSetWPF
 {
   /// <summary>
   /// Represents the extended information about a game.
   /// </summary>
-  public class Game
+  [DataContract]
+  public class Game : PropertyChangedBase
   {
     private int _id;
     private string _title;
@@ -211,10 +214,15 @@ namespace RAToolSetWPF
     /// <summary>
     /// The achievements of this game.
     /// </summary>
+    [DataMember(Name="Achievements")]
     public Dictionary<int, Achievement> Achievements
     {
       get { return _achievements; }
-      set { _achievements = value; } //TODO: safety
+      set 
+      { 
+        _achievements = value;
+        NotifyOfPropertyChange(() => Achievements);
+      } //TODO: safety
     }
 
     /// <summary>
@@ -351,6 +359,7 @@ namespace RAToolSetWPF
       ImageTitleString = g.ImageTitleString;
       ImageIngameString = g.ImageIngameString;
       ForumTopicID = g.ForumTopicID;
+      Achievements = g.Achievements;
 
       FetchIcon();
       IsFetched = true;
