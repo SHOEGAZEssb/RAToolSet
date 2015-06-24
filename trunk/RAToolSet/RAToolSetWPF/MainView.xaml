@@ -104,17 +104,25 @@
           <Grid.RowDefinitions>
             <RowDefinition Height="5"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="64"/>
             <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
 
           <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="64"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
           
-          <Label Grid.Row="1" Grid.Column="0" Content="Select Achievement:"/>
-          <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SelectedGame.Achievements}" SelectedValuePath="Value" DisplayMemberPath="Value.Title"/>
+          <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Select Achievement:"/>
+          <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding SelectedGame.Achievements.Values}" SelectedItem="{Binding SelectedAchievement}" DisplayMemberPath="Title"/>
+
+          <Border Grid.Row="3" Grid.Column="1" Width="64" Height="64" BorderThickness="1" BorderBrush="#FF000000">
+            <Image Grid.Row="3" Grid.Column="1" Width="64" Height="64" Source="{Binding SelectedAchievement.Badge}"/>
+          </Border>
         </Grid>     
       </TabItem>
       <TabItem Header="Leaderboard Maker" DataContext="{Binding ConditionViewModel}">

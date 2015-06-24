@@ -1,23 +1,27 @@
-﻿namespace RAToolSetWPF
+﻿using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+namespace RAToolSetWPF
 {
   /// <summary>
   /// Represents a single achievement of a game.
   /// </summary>
   public class Achievement
   {
-    int _id;
-    int _numAwarded;
-    int _numAwardedHardcore;
-    string _title;
-    string _description;
-    int _points;
-    int _trueRatio;
-    string _author;
-    string _dateModified;
-    string _dateCreated;
-    int _badgeID;
-    int _displayOrder;
-    string _memAddr;
+    private int _id;
+    private int _numAwarded;
+    private int _numAwardedHardcore;
+    private string _title;
+    private string _description;
+    private int _points;
+    private int _trueRatio;
+    private string _author;
+    private string _dateModified;
+    private string _dateCreated;
+    private int _badgeName;
+    private int _displayOrder;
+    private string _memAddr;
+    private ImageSource _badge;
 
     /// <summary>
     /// The id of this achievement.
@@ -112,10 +116,10 @@
     /// <summary>
     /// The id of the badge of this achievement.
     /// </summary>
-    public int BadgeID
+    public int BadgeName
     {
-      get { return _badgeID; }
-      private set { _badgeID = value; }
+      get { return _badgeName; }
+      private set { _badgeName = value; }
     }
 
     /// <summary>
@@ -137,10 +141,19 @@
     }
 
     /// <summary>
+    /// The badge/icon of this achievement.
+    /// </summary>
+    public ImageSource Badge
+    {
+      get { return _badge; }
+      private set { _badge = value; }
+    }
+
+    /// <summary>
     /// Ctor.
     /// </summary>
     public Achievement(int id, int numAwarded, int numAwardedHardcore, string title, string description, int points, int trueRatio, string author,
-                       string dateModified, string dateCreated, int badgeID, int displayOrder, string memAddr)                       
+                       string dateModified, string dateCreated, int badgeName, int displayOrder, string memAddr)
     {
       ID = id;
       NumAwarded = numAwarded;
@@ -152,9 +165,22 @@
       Author = author;
       DateModified = dateModified;
       DateCreated = dateCreated;
-      BadgeID = badgeID;
+      BadgeName = badgeName;
       DisplayOrder = displayOrder;
       MemAddr = memAddr;
+    }
+
+    /// <summary>
+    /// Downloads the badge image of this achievement.
+    /// </summary>
+    public void FetchBadge()
+    {
+      BitmapImage imageSource = new BitmapImage();
+      imageSource.BeginInit();
+      string badge = BadgeName.ToString("00000");
+      imageSource.UriSource = new System.Uri("http://i.retroachievements.org/Badge/" + badge + ".png");
+      imageSource.EndInit();
+      Badge = imageSource;
     }
   }
 }
