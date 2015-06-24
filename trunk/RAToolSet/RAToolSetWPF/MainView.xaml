@@ -101,8 +101,21 @@
       </TabItem>
       <TabItem Header="Achievement Inspector">
         <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
 
-        </Grid>
+          <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          
+          <Label Grid.Row="1" Grid.Column="0" Content="Select Achievement:"/>
+          <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SelectedGame.Achievements}" SelectedValuePath="Value" DisplayMemberPath="Value.Title"/>
+        </Grid>     
       </TabItem>
       <TabItem Header="Leaderboard Maker" DataContext="{Binding ConditionViewModel}">
         <Grid>

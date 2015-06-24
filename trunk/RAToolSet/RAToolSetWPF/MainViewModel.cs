@@ -267,8 +267,6 @@ namespace RAToolSetWPF
     /// <param name="e">Game ID to get info for</param>
     private void getGameInfoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
-      //int gameID = (int)e.Argument;
-
       StatusText = "Getting " + SelectedGame.Title + " Game Info";
 
       _watch.Reset();
@@ -278,9 +276,7 @@ namespace RAToolSetWPF
 
       StatusText = "Fetched " + SelectedGame.Title + " Game Info, took " + _watch.ElapsedMilliseconds + " milliseconds.";
 
-      // TODO: write a "merge" function to add the serialized properties to the original game
       Game g = JsonConvert.DeserializeObject<Game>(info);
-
 
       for(int i = 0; i < SelectedConsole.Games.Count; i++)
       {
