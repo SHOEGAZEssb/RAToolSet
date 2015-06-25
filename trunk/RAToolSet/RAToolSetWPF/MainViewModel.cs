@@ -109,6 +109,8 @@ namespace RAToolSetWPF
 
           NotifyOfPropertyChange(() => SelectedGame);
           NotifyOfPropertyChange(() => AchievementComboBoxEnabled);
+          NotifyOfPropertyChange(() => GameSeperatorVisible);
+          NotifyOfPropertyChange(() => AchievementPointSum);
         }
       }
     }
@@ -126,7 +128,7 @@ namespace RAToolSetWPF
           SelectedAchievement.FetchBadge();
 
         NotifyOfPropertyChange(() => SelectedAchievement);
-        NotifyOfPropertyChange(() => AchievementSeperatorVisible);
+        NotifyOfPropertyChange(() => AchievementSeperatorVisible);       
       }
     }
 
@@ -160,12 +162,17 @@ namespace RAToolSetWPF
       get { return (SelectedConsole != null && SelectedConsole.Games.Count != 0); }
     }
 
+    public bool GameSeperatorVisible
+    {
+      get { return SelectedGame != null; }
+    }
+
     /// <summary>
     /// Gets wether the achievement combobox on the view is enabled.
     /// </summary>
     public bool AchievementComboBoxEnabled
     {
-      get { return (SelectedGame != null && SelectedGame.Achievements.Count != 0); }
+      get { return (SelectedGame != null && SelectedGame.Achievements != null && SelectedGame.Achievements.Count != 0); }
     }
 
     /// <summary>
@@ -177,6 +184,26 @@ namespace RAToolSetWPF
     }
 
     #endregion
+
+    /// <summary>
+    /// Gets the sum of all points of the achievements of the selected game.
+    /// </summary>
+    public int AchievementPointSum
+    {
+      get
+      {
+        int sum = 0;
+        if(SelectedGame != null && SelectedGame.Achievements != null)
+        {
+          foreach(Achievement ach in SelectedGame.Achievements.Values)
+          {
+            sum += ach.Points;
+          }
+        }
+
+        return sum;
+      }
+    }
 
     #endregion
 
@@ -237,6 +264,12 @@ namespace RAToolSetWPF
     public void ForumTopicClicked()
     {
       string link = "http://retroachievements.org/viewtopic.php?t=&c=".Replace("t=", "t=" + SelectedGame.ForumTopicID);
+      Process.Start(link);
+    }
+
+    public void AuthorClicked()
+    {
+      string link = "http://retroachievements.org/User/" + SelectedAchievement.Author;
       Process.Start(link);
     }
 
@@ -331,6 +364,7 @@ namespace RAToolSetWPF
 
       NotifyOfPropertyChange(() => SelectedGame);
       NotifyOfPropertyChange(() => AchievementComboBoxEnabled);
+      NotifyOfPropertyChange(() => AchievementPointSum);
     }
 
     #endregion

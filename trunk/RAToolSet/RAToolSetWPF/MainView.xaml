@@ -68,11 +68,17 @@
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
 
-          <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="#FF000000" Width="64" Height="64" Margin="0,0,6,0">
+          <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="#FF000000" Width="64" Height="64" Margin="0,0,12,0">
             <Image Grid.Column="1" Grid.Row="1" Source="{Binding SelectedGame.ImageIcon}" Width="64" Height="64" />
           </Border>
 
-          <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+          <StackPanel Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
+            <Label  Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+            <Label Content="(" Visibility="{Binding GameSeperatorVisible, Converter={StaticResource BoolToVis}}" FontWeight="ExtraBold" FontSize="20"/>
+            <Label Content="{Binding AchievementPointSum}" Visibility="{Binding GameSeperatorVisible, Converter={StaticResource BoolToVis}}" 
+                   FontWeight="ExtraBold" FontSize="20"/>
+            <Label Content=")" Visibility="{Binding GameSeperatorVisible, Converter={StaticResource BoolToVis}}" FontWeight="ExtraBold" FontSize="20"/>
+          </StackPanel>
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
 
           <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Content="Developer:" FontWeight="Bold"/>
@@ -133,7 +139,7 @@
               <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="1" Grid.Column="1" Width="64" Height="64" BorderThickness="1" BorderBrush="#FF000000" Margin="0,0,9,0">
+            <Border Grid.Row="1" Grid.Column="1" Width="64" Height="64" BorderThickness="1" BorderBrush="#FF000000" Margin="0,0,15,0">
               <Image Grid.Row="1" Grid.Column="1" Width="64" Height="64" Source="{Binding SelectedAchievement.Badge}"/>
             </Border>
 
@@ -163,7 +169,17 @@
               <Label Content="{Binding SelectedAchievement.NumAwardedHardcore}"/>
             </StackPanel>
 
-            <Label Content="{Binding SelectedAchievement.Author}" Grid.Row="4" Grid.Column="2"/>
+            <TextBlock Grid.Row="4" Grid.Column="2" Margin="5,5,0,0">
+            <Hyperlink>
+              <TextBlock Text="{Binding SelectedAchievement.Author}">
+                <i:Interaction.Triggers>
+                  <i:EventTrigger EventName="MouseDown">
+                    <cal:ActionMessage MethodName="AuthorClicked"/>
+                  </i:EventTrigger>
+                </i:Interaction.Triggers>
+              </TextBlock>
+            </Hyperlink>
+          </TextBlock>
             <Label Content="{Binding SelectedAchievement.DateCreated}" Grid.Row="5" Grid.Column="2"/>
             <Label Content="{Binding SelectedAchievement.DateModified}" Grid.Row="6" Grid.Column="2"/>
             <Label Content="{Binding SelectedAchievement.MemAddr}" Grid.Row="7" Grid.Column="2"/>
