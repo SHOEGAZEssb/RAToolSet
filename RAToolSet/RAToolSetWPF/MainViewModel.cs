@@ -108,6 +108,7 @@ namespace RAToolSetWPF
             _getGameInfoWorker.RunWorkerAsync();
 
           NotifyOfPropertyChange(() => SelectedGame);
+          NotifyOfPropertyChange(() => AchievementComboBoxEnabled);
         }
       }
     }
@@ -125,6 +126,7 @@ namespace RAToolSetWPF
           SelectedAchievement.FetchBadge();
 
         NotifyOfPropertyChange(() => SelectedAchievement);
+        NotifyOfPropertyChange(() => AchievementSeperatorVisible);
       }
     }
 
@@ -142,16 +144,39 @@ namespace RAToolSetWPF
       }
     }
 
-    public bool GameComboBoxEnabled
-    {
-      get { return (SelectedConsole != null && SelectedConsole.Games.Count != 0); }
-    }
-
     public ConditionViewModel ConditionViewModel
     {
       get { return _conditionViewModel; }
       private set { _conditionViewModel = value; }
     }
+
+    #region Enable and Visibility Properties
+
+    /// <summary>
+    /// Gets wether the game combobox on the view is enabled.
+    /// </summary>
+    public bool GameComboBoxEnabled
+    {
+      get { return (SelectedConsole != null && SelectedConsole.Games.Count != 0); }
+    }
+
+    /// <summary>
+    /// Gets wether the achievement combobox on the view is enabled.
+    /// </summary>
+    public bool AchievementComboBoxEnabled
+    {
+      get { return (SelectedGame != null && SelectedGame.Achievements.Count != 0); }
+    }
+
+    /// <summary>
+    /// Gets wether the achievement seperators are visible on the view.
+    /// </summary>
+    public bool AchievementSeperatorVisible
+    {
+      get { return SelectedAchievement != null; }
+    }
+
+    #endregion
 
     #endregion
 
@@ -305,6 +330,7 @@ namespace RAToolSetWPF
       }
 
       NotifyOfPropertyChange(() => SelectedGame);
+      NotifyOfPropertyChange(() => AchievementComboBoxEnabled);
     }
 
     #endregion
