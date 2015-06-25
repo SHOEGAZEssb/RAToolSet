@@ -3,14 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="370" Width="525">
 
   <Window.Resources>
     <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
       <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown" />
       <EventSetter Event="PreviewTextInput" Handler="DataGridCell_PreviewTextInput" />
     </Style>
- 
+
     <Style x:Key="FauxLabel" TargetType="{x:Type TextBox}">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="BorderBrush" Value="{x:Null}"/>
@@ -44,7 +44,6 @@
     <ComboBox Grid.Column="6" ItemsSource="{Binding SelectedConsole.Games}" DisplayMemberPath="Title" IsEnabled="{Binding GameComboBoxEnabled}" 
               SelectedItem="{Binding SelectedGame}"/>
 
-
     <TabControl Grid.Row="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
       <TabItem Header="Game Inspector">
         <Grid >
@@ -69,10 +68,10 @@
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
 
-          <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="#FF000000" Width="64" Height="64" Margin="0,0,5,0">     
+          <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="#FF000000" Width="64" Height="64" Margin="0,0,6,0">
             <Image Grid.Column="1" Grid.Row="1" Source="{Binding SelectedGame.ImageIcon}" Width="64" Height="64" />
           </Border>
-          
+
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
 
@@ -100,30 +99,60 @@
         </Grid>
       </TabItem>
       <TabItem Header="Achievement Inspector">
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="5"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="5"/>
-            <RowDefinition Height="64"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="5"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-          <Grid.ColumnDefinitions >
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="64"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          
-          <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Select Achievement:"/>
-          <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding SelectedGame.Achievements.Values}" SelectedItem="{Binding SelectedAchievement}" DisplayMemberPath="Title"/>
+            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Select Achievement:"/>
+            <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding SelectedGame.Achievements.Values}" SelectedItem="{Binding SelectedAchievement}" DisplayMemberPath="Title"/>
+          </Grid>
 
-          <Border Grid.Row="3" Grid.Column="1" Width="64" Height="64" BorderThickness="1" BorderBrush="#FF000000">
-            <Image Grid.Row="3" Grid.Column="1" Width="64" Height="64" Source="{Binding SelectedAchievement.Badge}"/>
-          </Border>
-        </Grid>     
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="5"/>
+              <RowDefinition Height="64"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions >
+              <ColumnDefinition Width="5"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="1" Grid.Column="1" Width="64" Height="64" BorderThickness="1" BorderBrush="#FF000000" Margin="0,0,9,0">
+              <Image Grid.Row="1" Grid.Column="1" Width="64" Height="64" Source="{Binding SelectedAchievement.Badge}"/>
+            </Border>
+
+            <Label Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedAchievement.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+            <Label Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedAchievement.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
+
+            <Label Content="Description:" Grid.Row="2" Grid.Column="1"/>
+            <Label Content="# Awarded:" Grid.Row="3" Grid.Column="1"/>
+            <Label Content="Creator:" Grid.Row="4" Grid.Column="1"/>
+            <Label Content="Created On:" Grid.Row="5" Grid.Column="1"/>
+            <Label Content="Last Modified:" Grid.Row="6" Grid.Column="1"/>
+            <Label Content="Memory:" Grid.Row="7" Grid.Column="1"/>
+
+            <Label Content="{Binding SelectedAchievement.Description}" Grid.Row="2" Grid.Column="2"/>
+            <Label Content="{Binding SelectedAchievement.NumAwarded}" Grid.Row="3" Grid.Column="2"/>
+            <Label Content="{Binding SelectedAchievement.Author}" Grid.Row="4" Grid.Column="2"/>
+            <Label Content="{Binding SelectedAchievement.DateCreated}" Grid.Row="5" Grid.Column="2"/>
+            <Label Content="{Binding SelectedAchievement.DateModified}" Grid.Row="6" Grid.Column="2"/>
+            <Label Content="{Binding SelectedAchievement.MemAddr}" Grid.Row="7" Grid.Column="2"/>
+          </Grid>
+        </StackPanel>
       </TabItem>
       <TabItem Header="Leaderboard Maker" DataContext="{Binding ConditionViewModel}">
         <Grid>

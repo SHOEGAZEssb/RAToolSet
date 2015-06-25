@@ -70,10 +70,7 @@ namespace RAToolSetWPF
     public ObservableCollection<Console> ConsoleList
     {
       get { return _consoleList; }
-      private set 
-      { 
-        _consoleList = value;
-      }
+      private set { _consoleList = value; }
     }
 
     /// <summary>
@@ -88,7 +85,7 @@ namespace RAToolSetWPF
         {
           _selectedConsole = value;
 
-          if(value != null && !value.IsFetched)
+          if (value != null && !value.IsFetched)
             _getGameListWorker.RunWorkerAsync();
 
           NotifyOfPropertyChange(() => SelectedConsole);
@@ -124,7 +121,7 @@ namespace RAToolSetWPF
       set
       {
         _selectedAchievement = value;
-        if(SelectedAchievement != null && SelectedAchievement.Badge == null)
+        if (SelectedAchievement != null && SelectedAchievement.Badge == null)
           SelectedAchievement.FetchBadge();
 
         NotifyOfPropertyChange(() => SelectedAchievement);
@@ -264,7 +261,7 @@ namespace RAToolSetWPF
         try
         {
           Game g = (JsonConvert.DeserializeObject<Game>(game));
-          if(g != null)
+          if (g != null)
             _dispatcher.Invoke(new System.Action(() => { SelectedConsole.Games.Add(g); }));
         }
         catch
@@ -295,13 +292,13 @@ namespace RAToolSetWPF
 
       Game g = JsonConvert.DeserializeObject<Game>(info);
 
-      for(int i = 0; i < SelectedConsole.Games.Count; i++)
+      for (int i = 0; i < SelectedConsole.Games.Count; i++)
       {
         if (SelectedConsole.Games[i].ID == g.ID)
         {
-          _dispatcher.Invoke(new System.Action(() => 
+          _dispatcher.Invoke(new System.Action(() =>
           {
-            SelectedConsole.Games[i].MergeGame(g);       
+            SelectedConsole.Games[i].MergeGame(g);
           }));
           break;
         }
