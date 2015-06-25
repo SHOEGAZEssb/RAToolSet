@@ -18,6 +18,8 @@
       <Setter Property="IsTabStop" Value="False"/>
       <Setter Property="IsReadOnly" Value="True" />
     </Style>
+
+    <BooleanToVisibilityConverter x:Key="BoolToVis"/>
   </Window.Resources>
 
   <Grid>
@@ -55,9 +57,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+
           </Grid.RowDefinitions>
 
           <Grid.ColumnDefinitions >
@@ -75,11 +75,11 @@
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
           <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedGame.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
 
-          <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Content="Developer:"/>
-          <Label Grid.Column="1" Grid.Row="3" Content="Publisher:"/>
-          <Label Grid.Column="1" Grid.Row="4" Content="Genre:"/>
-          <Label Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Content="First released:"/>
-          <Label Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Content="Forum Topic:"/>
+          <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Content="Developer:" FontWeight="Bold"/>
+          <Label Grid.Column="1" Grid.Row="3" Content="Publisher:" FontWeight="Bold"/>
+          <Label Grid.Column="1" Grid.Row="4" Content="Genre:" FontWeight="Bold"/>
+          <Label Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Content="First released:" FontWeight="Bold"/>
+          <Label Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Content="Forum Topic:" FontWeight="Bold"/>
 
           <Label Grid.Column="3" Grid.Row="2"  Content="{Binding SelectedGame.Developer}"/>
           <Label Grid.Column="3" Grid.Row="3" Content="{Binding SelectedGame.Publisher}"/>
@@ -109,7 +109,8 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Select Achievement:"/>
-            <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding SelectedGame.Achievements.Values}" SelectedItem="{Binding SelectedAchievement}" DisplayMemberPath="Title"/>
+            <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding SelectedGame.Achievements.Values}" SelectedItem="{Binding SelectedAchievement}" 
+                      DisplayMemberPath="Title" IsEnabled="{Binding AchievementComboBoxEnabled}"/>
           </Grid>
 
           <Grid>
@@ -128,6 +129,7 @@
               <ColumnDefinition Width="5"/>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
               <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
@@ -135,18 +137,32 @@
               <Image Grid.Row="1" Grid.Column="1" Width="64" Height="64" Source="{Binding SelectedAchievement.Badge}"/>
             </Border>
 
-            <Label Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedAchievement.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+            <StackPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
+              <Label Content="{Binding SelectedAchievement.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+              <Label Content="(" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding AchievementSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
+              <Label Content="{Binding SelectedAchievement.Points}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+              <Label Content=")" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding AchievementSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
+              <Label Content="(" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding AchievementSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
+              <Label Content="{Binding SelectedAchievement.TrueRatio}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+              <Label Content=")" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding AchievementSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
+            </StackPanel>
             <Label Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding SelectedAchievement.ID}" VerticalAlignment="Bottom" FontWeight="ExtraBold" FontSize="20"/>
 
-            <Label Content="Description:" Grid.Row="2" Grid.Column="1"/>
-            <Label Content="# Awarded:" Grid.Row="3" Grid.Column="1"/>
-            <Label Content="Creator:" Grid.Row="4" Grid.Column="1"/>
-            <Label Content="Created On:" Grid.Row="5" Grid.Column="1"/>
-            <Label Content="Last Modified:" Grid.Row="6" Grid.Column="1"/>
-            <Label Content="Memory:" Grid.Row="7" Grid.Column="1"/>
+            <Label Content="Description:" Grid.Row="2" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="# Awarded:" Grid.Row="3" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Creator:" Grid.Row="4" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Created On:" Grid.Row="5" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Last Modified:" Grid.Row="6" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Memory:" Grid.Row="7" Grid.Column="1" FontWeight="Bold"/>
 
             <Label Content="{Binding SelectedAchievement.Description}" Grid.Row="2" Grid.Column="2"/>
-            <Label Content="{Binding SelectedAchievement.NumAwarded}" Grid.Row="3" Grid.Column="2"/>
+
+            <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
+              <Label Content="{Binding SelectedAchievement.NumAwarded}" />
+              <Label Content="/" Visibility="{Binding AchievementSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
+              <Label Content="{Binding SelectedAchievement.NumAwardedHardcore}"/>
+            </StackPanel>
+
             <Label Content="{Binding SelectedAchievement.Author}" Grid.Row="4" Grid.Column="2"/>
             <Label Content="{Binding SelectedAchievement.DateCreated}" Grid.Row="5" Grid.Column="2"/>
             <Label Content="{Binding SelectedAchievement.DateModified}" Grid.Row="6" Grid.Column="2"/>
