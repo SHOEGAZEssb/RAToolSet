@@ -75,3 +75,17 @@
 [26.06.2015 14:26:33]: Fetched Console Information, took 825 milliseconds.
 [26.06.2015 14:29:03]: Getting console data.
 [26.06.2015 14:29:03]: Fetched Console Information, took 61 milliseconds.
+[26.06.2015 15:13:36]: Getting console data.
+[26.06.2015 15:13:36]: Fetched Console Information, took 122 milliseconds.
+[26.06.2015 15:13:38]: Getting Gameboy Game List.
+[26.06.2015 15:13:38]: Fetched Gameboy Game List, took 142 milliseconds.
+[26.06.2015 15:13:39]: Getting Adventure Island Game Info
+[26.06.2015 15:13:39]: Fetched Adventure Island Game Info, took 106 milliseconds.
+[26.06.2015 15:15:07]: Getting console data.
+[26.06.2015 15:15:08]: Fetched Console Information, took 684 milliseconds.
+[26.06.2015 15:15:13]: Getting Gameboy Game List.
+[26.06.2015 15:15:13]: Fetched Gameboy Game List, took 160 milliseconds.
+[26.06.2015 15:15:15]: Getting Adventures of Lolo Game Info
+[26.06.2015 15:15:15]: Fetched Adventures of Lolo Game Info, took 66 milliseconds.
+[26.06.2015 15:15:42]: Getting Kirby's Star Stacker Game Info
+[26.06.2015 15:15:43]: Fetched Kirby's Star Stacker Game Info, took 127 milliseconds.

@@ -295,6 +295,15 @@ namespace RAToolSetWPF
       Process.Start(link);
     }
 
+    /// <summary>
+    /// Shows a window with the rich presence script of the selected game.
+    /// </summary>
+    public void RichPresenceClicked()
+    {
+      RichPresenceWindow rpw = new RichPresenceWindow(SelectedGame.RichPresencePatch);
+      rpw.Show();
+    }
+
     #region BackgroundWorker DoWork Methods
 
     /// <summary>

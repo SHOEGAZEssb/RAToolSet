@@ -1,0 +1,10 @@
+﻿<Window x:Class="RAToolSetWPF.RichPresenceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RichPresenceWindow" Height="600" Width="800">
+  <Grid>
+    <ScrollViewer>
+      <TextBlock Name="textBlock" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </ScrollViewer>
+  </Grid>
+</Window>
