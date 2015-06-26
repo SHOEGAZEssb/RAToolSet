@@ -96,7 +96,7 @@ namespace RAToolSetWPF
       get { return _operand1; }
       set 
       {
-        if (!value.StartsWith("0x"))
+        if (Type1 != MemType.Value && !value.StartsWith("0x"))
           _operand1 = "0x" + value;
         else
           _operand1 = value;
@@ -138,7 +138,7 @@ namespace RAToolSetWPF
       get { return _operand2; }
       set 
       {
-        if (!value.StartsWith("0x"))
+        if (Type2 != MemType.Value && !value.StartsWith("0x"))
           _operand2 = "0x" + value;
         else
           _operand2 = value; 
