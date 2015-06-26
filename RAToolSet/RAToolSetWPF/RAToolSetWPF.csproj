@@ -70,6 +70,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="LoginWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -84,6 +88,7 @@
     <Compile Include="ConditionViewModel.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="Logging.cs" />
+    <Compile Include="LoginWindow.xaml.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="MainView.xaml.cs">

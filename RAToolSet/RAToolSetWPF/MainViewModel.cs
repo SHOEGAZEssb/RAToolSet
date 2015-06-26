@@ -238,8 +238,8 @@ namespace RAToolSetWPF
       ServicePointManager.Expect100Continue = false;
       ServicePointManager.UseNagleAlgorithm = false;
 
-      //var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=" + RAToolSetWPF.Properties.Settings.Default.Username + "&y=" + RAToolSetWPF.Properties.Settings.Default.APIKey + "&i=" + argument);
-      var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=coczero" + "&y=AEwHP8tc6G9JaUweJl3zMZq2CRj2uIPV" + "&i=" + argument);
+      var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=" + RAToolSetWPF.Properties.Settings.Default.Username +
+        "&y=" + RAToolSetWPF.Properties.Settings.Default.APIKey + "&i=" + argument);
 
       request.Proxy = new WebProxy();
       string text;
@@ -267,6 +267,9 @@ namespace RAToolSetWPF
       Process.Start(link);
     }
 
+    /// <summary>
+    /// Opens the user page of the author of the selected achievement.
+    /// </summary>
     public void AuthorClicked()
     {
       string link = "http://retroachievements.org/User/" + SelectedAchievement.Author;
