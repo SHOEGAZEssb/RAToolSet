@@ -32,7 +32,8 @@ namespace RAToolSetWPF
       if (CheckInput())
       {
         SaveSettings();
-        Close();
+        DialogResult = true;
+        this.Close();
       }
       else
         MessageBox.Show("Invalid username or API key!");

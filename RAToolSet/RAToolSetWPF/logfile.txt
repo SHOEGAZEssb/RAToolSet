@@ -1,1 +1,77 @@
 [26.06.2015 13:23:30]: Getting console data.
+[26.06.2015 13:56:58]: Getting console data.
+[26.06.2015 13:57:43]: Getting console data.
+[26.06.2015 13:57:43]: Fetched Console Information, took 121 milliseconds.
+[26.06.2015 13:58:08]: Getting Gameboy Game List.
+[26.06.2015 13:58:08]: Fetched Gameboy Game List, took 192 milliseconds.
+[26.06.2015 13:58:09]: Getting 16-in-1 SuperCard Game Info
+[26.06.2015 13:58:09]: Fetched 16-in-1 SuperCard Game Info, took 57 milliseconds.
+[26.06.2015 13:58:13]: Getting Addams Family, The Game Info
+[26.06.2015 13:58:13]: Fetched Addams Family, The Game Info, took 59 milliseconds.
+[26.06.2015 13:58:19]: Getting Addams Family, The - Pugsley's Scavenger Hunt Game Info
+[26.06.2015 13:58:19]: Fetched Addams Family, The - Pugsley's Scavenger Hunt Game Info, took 119 milliseconds.
+[26.06.2015 13:58:20]: Getting Adventure Island Game Info
+[26.06.2015 13:58:20]: Fetched Adventure Island Game Info, took 122 milliseconds.
+[26.06.2015 13:58:21]: Getting Adventure Island II: Aliens In Paradise Game Info
+[26.06.2015 13:58:21]: Fetched Adventure Island II: Aliens In Paradise Game Info, took 59 milliseconds.
+[26.06.2015 13:58:22]: Getting Adventures of Lolo Game Info
+[26.06.2015 13:58:22]: Fetched Adventures of Lolo Game Info, took 64 milliseconds.
+[26.06.2015 13:58:22]: Getting Adventures of Pinocchio, The Game Info
+[26.06.2015 13:58:22]: Fetched Adventures of Pinocchio, The Game Info, took 68 milliseconds.
+[26.06.2015 13:58:23]: Getting Adventures of Rocky And Bullwinkle And Friends, The Game Info
+[26.06.2015 13:58:23]: Fetched Adventures of Rocky And Bullwinkle And Friends, The Game Info, took 58 milliseconds.
+[26.06.2015 13:58:23]: Getting Adventures of Star Saver, The Game Info
+[26.06.2015 13:58:23]: Fetched Adventures of Star Saver, The Game Info, took 58 milliseconds.
+[26.06.2015 13:58:24]: Getting Aero Star Game Info
+[26.06.2015 13:58:24]: Fetched Aero Star Game Info, took 62 milliseconds.
+[26.06.2015 13:58:24]: Getting After Burst Game Info
+[26.06.2015 13:58:24]: Fetched After Burst Game Info, took 77 milliseconds.
+[26.06.2015 13:58:24]: Getting Ah Harimanada Game Info
+[26.06.2015 13:58:24]: Fetched Ah Harimanada Game Info, took 59 milliseconds.
+[26.06.2015 13:58:25]: Getting Alfred Chicken Game Info
+[26.06.2015 13:58:25]: Fetched Alfred Chicken Game Info, took 83 milliseconds.
+[26.06.2015 13:58:25]: Getting Alien 3 Game Info
+[26.06.2015 13:58:25]: Fetched Alien 3 Game Info, took 59 milliseconds.
+[26.06.2015 13:58:25]: Getting Alien vs Predator - The Last of His Clan Game Info
+[26.06.2015 13:58:25]: Fetched Alien vs Predator - The Last of His Clan Game Info, took 58 milliseconds.
+[26.06.2015 13:58:26]: Getting Alleyway Game Info
+[26.06.2015 13:58:26]: Fetched Alleyway Game Info, took 62 milliseconds.
+[26.06.2015 13:58:26]: Getting Altered Space Game Info
+[26.06.2015 13:58:26]: Fetched Altered Space Game Info, took 59 milliseconds.
+[26.06.2015 13:58:26]: Getting Amazing Spider-Man 2, The Game Info
+[26.06.2015 13:58:26]: Fetched Amazing Spider-Man 2, The Game Info, took 60 milliseconds.
+[26.06.2015 13:58:26]: Getting Amazing Spider-Man, The Game Info
+[26.06.2015 13:58:26]: Fetched Amazing Spider-Man, The Game Info, took 60 milliseconds.
+[26.06.2015 13:58:27]: Getting Amazing Tater Game Info
+[26.06.2015 13:58:27]: Fetched Amazing Tater Game Info, took 58 milliseconds.
+[26.06.2015 13:58:27]: Getting ANIMAL BREEDER2 Game Info
+[26.06.2015 13:58:27]: Fetched ANIMAL BREEDER2 Game Info, took 58 milliseconds.
+[26.06.2015 13:58:27]: Getting Animaniacs Game Info
+[26.06.2015 13:58:27]: Fetched Animaniacs Game Info, took 60 milliseconds.
+[26.06.2015 13:58:27]: Getting ASTERIX Game Info
+[26.06.2015 13:58:27]: Fetched ASTERIX Game Info, took 58 milliseconds.
+[26.06.2015 13:58:28]: Getting Avenging Spirit Game Info
+[26.06.2015 13:58:28]: Fetched Avenging Spirit Game Info, took 79 milliseconds.
+[26.06.2015 14:04:08]: Getting console data.
+[26.06.2015 14:04:08]: Fetched Console Information, took 135 milliseconds.
+[26.06.2015 14:05:42]: Getting console data.
+[26.06.2015 14:05:43]: Fetched Console Information, took 120 milliseconds.
+[26.06.2015 14:09:50]: Getting console data.
+[26.06.2015 14:10:29]: Getting console data.
+[26.06.2015 14:12:03]: Getting console data.
+[26.06.2015 14:12:41]: Getting console data.
+[26.06.2015 14:12:41]: Fetched Console Information, took 121 milliseconds.
+[26.06.2015 14:15:03]: Getting console data.
+[26.06.2015 14:15:49]: Getting console data.
+[26.06.2015 14:15:50]: Fetched Console Information, took 120 milliseconds.
+[26.06.2015 14:16:02]: Getting console data.
+[26.06.2015 14:22:07]: Getting console data.
+[26.06.2015 14:22:54]: Getting console data.
+[26.06.2015 14:22:54]: Fetched Console Information, took 119 milliseconds.
+[26.06.2015 14:23:11]: Getting console data.
+[26.06.2015 14:26:26]: Getting console data.
+[26.06.2015 14:26:26]: Fetched Console Information, took 126 milliseconds.
+[26.06.2015 14:26:32]: Getting console data.
+[26.06.2015 14:26:33]: Fetched Console Information, took 825 milliseconds.
+[26.06.2015 14:29:03]: Getting console data.
+[26.06.2015 14:29:03]: Fetched Console Information, took 61 milliseconds.

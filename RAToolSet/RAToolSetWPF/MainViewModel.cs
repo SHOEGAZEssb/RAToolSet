@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace RAToolSetWPF
@@ -219,11 +220,29 @@ namespace RAToolSetWPF
       _watch = new Stopwatch();
       _getConsolesWorker = new BackgroundWorker();
       _getConsolesWorker.DoWork += new DoWorkEventHandler(getConsolesWorker_DoWork);
-      _getConsolesWorker.RunWorkerAsync();
       _getGameListWorker = new BackgroundWorker();
       _getGameListWorker.DoWork += new DoWorkEventHandler(getGameListWorker_DoWork);
       _getGameInfoWorker = new BackgroundWorker();
       _getGameInfoWorker.DoWork += new DoWorkEventHandler(getGameInfoWorker_DoWork);
+    }
+
+    /// <summary>
+    /// Tries to log in the user before fetching any data.
+    /// </summary>
+    public void WindowLoaded()
+    {
+      bool? dialogResult = true;
+
+      if (RAToolSetWPF.Properties.Settings.Default.Username == "" || RAToolSetWPF.Properties.Settings.Default.APIKey == "")
+      {
+        LoginWindow lw = new LoginWindow();
+        dialogResult = lw.ShowDialog();
+      }
+
+      if (dialogResult.Value)
+        _getConsolesWorker.RunWorkerAsync();
+      else
+        Application.Current.Shutdown();
     }
 
     /// <summary>

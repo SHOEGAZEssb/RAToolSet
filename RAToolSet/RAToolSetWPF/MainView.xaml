@@ -3,7 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
-        Title="MainWindow" Height="370" Width="525">
+        Title="MainWindow" Height="370" Width="525" >
+
+  <i:Interaction.Triggers>
+    <i:EventTrigger EventName="Loaded">
+      <cal:ActionMessage MethodName="WindowLoaded"/>
+    </i:EventTrigger>
+  </i:Interaction.Triggers>
 
   <Window.Resources>
     <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
@@ -57,6 +63,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
 
           </Grid.RowDefinitions>
 
@@ -86,17 +93,29 @@
           <Label Grid.Column="1" Grid.Row="4" Content="Genre:" FontWeight="Bold"/>
           <Label Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Content="First released:" FontWeight="Bold"/>
           <Label Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Content="Forum Topic:" FontWeight="Bold"/>
+          <Label Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Content="Rich Presence:" FontWeight="Bold"/>
 
           <Label Grid.Column="3" Grid.Row="2"  Content="{Binding SelectedGame.Developer}"/>
           <Label Grid.Column="3" Grid.Row="3" Content="{Binding SelectedGame.Publisher}"/>
           <Label Grid.Column="3" Grid.Row="4" Content="{Binding SelectedGame.Genre}"/>
           <Label Grid.Column="3" Grid.Row="5"  Content="{Binding SelectedGame.Released}"/>
-          <TextBlock Grid.Column="3" Grid.Row="6" Margin="5,5,0,0">
+          <TextBlock Grid.Column="3" Grid.Row="6" Margin="5,5,0,0" Visibility="{Binding GameSeperatorVisible, Converter={StaticResource BoolToVis}}">
             <Hyperlink>
               <TextBlock Text="{Binding SelectedGame.ForumTopicID}">
                 <i:Interaction.Triggers>
                   <i:EventTrigger EventName="MouseDown">
                     <cal:ActionMessage MethodName="ForumTopicClicked"/>
+                  </i:EventTrigger>
+                </i:Interaction.Triggers>
+              </TextBlock>
+            </Hyperlink>
+          </TextBlock>
+          <TextBlock Grid.Column="3" Grid.Row="7" Margin="5,5,0,0" Visibility="{Binding GameSeperatorVisible, Converter={StaticResource BoolToVis}}">
+            <Hyperlink>
+              <TextBlock Text="Click to show in external window.">
+                <i:Interaction.Triggers>
+                  <i:EventTrigger EventName="MouseDown">
+                    <cal:ActionMessage MethodName="RichPresenceClicked"/>
                   </i:EventTrigger>
                 </i:Interaction.Triggers>
               </TextBlock>
