@@ -4,6 +4,7 @@ Small tool with different functions for www.retroachievements.org
 # Current Features
 - Displaying game data
 - Displaying achievement data
+- Displaying user data
 - Leaderboard Maker
 
 # Usage
