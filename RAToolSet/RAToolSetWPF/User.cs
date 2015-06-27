@@ -120,7 +120,7 @@ namespace RAToolSetWPF
       private set 
       { 
         _userPic = value;
-        Username = UserPic.Replace("/UserPic/", "");
+        Username = UserPic.Replace("/UserPic/", "").Replace(".png", "");
       }
     }
 
@@ -147,21 +147,19 @@ namespace RAToolSetWPF
       Permissions = permissions;
       Motto = motto;
       Rank = rank;
-      UserPic = userPic;
-      UserPicture = FetchIcon();
+      UserPic = userPic;    
     }
 
     /// <summary>
     /// Downloads the user picture.
     /// </summary>
-    /// <returns>Downloaded user picture.</returns>
-    private ImageSource FetchIcon()
+    public void FetchIcon()
     {
       BitmapImage imageSource = new BitmapImage();
       imageSource.BeginInit();
       imageSource.UriSource = new System.Uri("http://retroachievements.org" + UserPic);
       imageSource.EndInit();
-      return imageSource;
+      UserPicture = imageSource;
     }
   }
 }

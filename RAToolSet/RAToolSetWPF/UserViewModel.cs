@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 
 namespace RAToolSetWPF
 {
@@ -74,8 +76,8 @@ namespace RAToolSetWPF
     public void LoadInfo()
     {
       User usr = _fetchedUsers.FirstOrDefault(i => i.Username == EnteredUsername);
-      if (usr == null)
-        _getUserWorker.RunWorkerAsync();
+      if (usr == null && !_getUserWorker.IsBusy)
+          _getUserWorker.RunWorkerAsync();      
       else
         SelectedUser = usr;
     }
@@ -89,19 +91,43 @@ namespace RAToolSetWPF
 
       _watch.Start();
       string text = MainViewModel.GetWebRequestResponse(APIFunction.GetUserSummary, EnteredUsername).Replace(';', ','); // hacky.
-      if (text.Substring(15, 4) != null) // user does not exist.
+      try
       {
+        User usr = JsonConvert.DeserializeObject<User>(text);
+        
+
         MainViewModel.Dispatcher.Invoke(new System.Action(() =>
           {
-            User usr = JsonConvert.DeserializeObject<User>(text);
-            _fetchedUsers.Add(usr);
-            SelectedUser = usr;
+            User newUser = CopyUser(usr);
+            _fetchedUsers.Add(newUser);
+            SelectedUser = newUser;
           }));
-      }
-      _watch.Stop();
 
-      _mainViewModel.StatusText = "Fetched " + EnteredUsername + " user info, took " + _watch.ElapsedMilliseconds + " ms.";
-      _watch.Reset();
+        _mainViewModel.StatusText = "Fetched " + EnteredUsername + " user info, took " + _watch.ElapsedMilliseconds + " ms.";
+      }  
+      catch(JsonSerializationException ex)
+      {
+        _mainViewModel.StatusText = "Error loading user info.";
+      }
+      finally
+      {
+        _watch.Stop();
+        _watch.Reset();
+      }    
+    }
+
+    /// <summary>
+    /// Copies the given <paramref name="usrToCopy"/> to a new user object.
+    /// This is used because exceptions dont bubble when thrown in the dispatcher.
+    /// </summary>
+    /// <param name="usrToCopy">User to copy info to new user object.</param>
+    /// <returns>New user object.</returns>
+    private User CopyUser(User usrToCopy)
+    {
+      User newUser = new User(usrToCopy.MemberSince, usrToCopy.LastLogin, usrToCopy.ContribCount, usrToCopy.ContribYield, usrToCopy.TotalPoints, usrToCopy.TotalTruePoints,
+                              usrToCopy.Permissions, usrToCopy.Motto, usrToCopy.Rank, usrToCopy.UserPic);
+      newUser.FetchIcon();
+      return newUser;
     }
   }
 }
