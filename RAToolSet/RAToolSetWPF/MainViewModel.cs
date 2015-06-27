@@ -18,7 +18,8 @@ namespace RAToolSetWPF
     GetConsoleIDs,
     GetGameList,
     GetGameExtended,
-    GetAchievementCount
+    GetAchievementCount,
+    GetUserSummary
   }
 
   /// <summary>
@@ -54,12 +55,10 @@ namespace RAToolSetWPF
     /// </summary>
     private BackgroundWorker _getGameInfoWorker;
 
-    /// <summary>
-    /// The dispatcher of this thread. Used for invoking certain UI-thread calls.
-    /// </summary>
-    private Dispatcher _dispatcher;
+    private static Dispatcher _dispatcher;
 
     private ConditionViewModel _conditionViewModel;
+    private UserViewModel _userViewModel;
 
     #endregion
 
@@ -139,7 +138,7 @@ namespace RAToolSetWPF
     public string StatusText
     {
       get { return _statusText; }
-      private set
+      set
       {
         _statusText = value;
         Logging.LogText(value);
@@ -147,10 +146,25 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// The dispatcher of this thread. Used for invoking certain UI-thread calls.
+    /// </summary>
+    public static Dispatcher Dispatcher
+    {
+      get { return _dispatcher; }
+      private set { _dispatcher = value; }
+    }
+
     public ConditionViewModel ConditionViewModel
     {
       get { return _conditionViewModel; }
       private set { _conditionViewModel = value; }
+    }
+
+    public UserViewModel UserViewModel
+    {
+      get { return _userViewModel; }
+      private set { _userViewModel = value; }
     }
 
     #region Enable and Visibility Properties
@@ -215,8 +229,9 @@ namespace RAToolSetWPF
     {
       // Initialize variables
       ConditionViewModel = new RAToolSetWPF.ConditionViewModel();
+      UserViewModel = new UserViewModel(this);
       ConsoleList = new ObservableCollection<Console>();
-      _dispatcher = Dispatcher.CurrentDispatcher;
+      Dispatcher = Dispatcher.CurrentDispatcher;
       _watch = new Stopwatch();
       _getConsolesWorker = new BackgroundWorker();
       _getConsolesWorker.DoWork += new DoWorkEventHandler(getConsolesWorker_DoWork);
@@ -251,14 +266,25 @@ namespace RAToolSetWPF
     /// <param name="apiFunction">APIFunction to call.</param>
     /// <param name="argument">Argument to pass.</param>
     /// <returns>Response from the WebRequest.</returns>
-    private string GetWebRequestResponse(APIFunction apiFunction, string argument)
+    public static string GetWebRequestResponse(APIFunction apiFunction, string argument)
     {
       ServicePointManager.DefaultConnectionLimit = 20;
       ServicePointManager.Expect100Continue = false;
       ServicePointManager.UseNagleAlgorithm = false;
 
-      var request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=" + RAToolSetWPF.Properties.Settings.Default.Username +
-        "&y=" + RAToolSetWPF.Properties.Settings.Default.APIKey + "&i=" + argument);
+      WebRequest request;
+
+      if (apiFunction != APIFunction.GetUserSummary)
+      {
+        request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=" + RAToolSetWPF.Properties.Settings.Default.Username +
+          "&y=" + RAToolSetWPF.Properties.Settings.Default.APIKey + "&i=" + argument);
+      }
+      else
+      {
+        // needed to use argument 'u' and 'g'
+        request = WebRequest.Create("http://retroachievements.org/API/API_" + apiFunction + ".php?z=" + RAToolSetWPF.Properties.Settings.Default.Username +
+          "&y=" + RAToolSetWPF.Properties.Settings.Default.APIKey + "&u=" + argument + "&g=0");
+      }
 
       request.Proxy = new WebProxy();
       string text;

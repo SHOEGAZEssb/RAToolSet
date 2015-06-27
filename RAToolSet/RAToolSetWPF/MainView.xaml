@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:RATS="clr-namespace:RAToolSetWPF"
         Title="RAToolSet" Height="370" Width="525" >
 
   <i:Interaction.Triggers>
@@ -26,6 +27,7 @@
     </Style>
 
     <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    <RATS:PermissionToStringConverter x:Key="PermToString"/>
   </Window.Resources>
 
   <Grid>
@@ -202,6 +204,83 @@
             <Label Content="{Binding SelectedAchievement.DateCreated}" Grid.Row="5" Grid.Column="2"/>
             <Label Content="{Binding SelectedAchievement.DateModified}" Grid.Row="6" Grid.Column="2"/>
             <Label Content="{Binding SelectedAchievement.MemAddr}" Grid.Row="7" Grid.Column="2"/>
+          </Grid>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="User Inspector" DataContext="{Binding UserViewModel}">
+        <StackPanel Orientation="Vertical">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="5"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="5"/>
+              <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter username:"/>
+            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding EnteredUsername}"/>
+            <Button Grid.Row="1" Grid.Column="5" Content="Load Info" >
+              <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                  <cal:ActionMessage MethodName="LoadInfo"/>
+                </i:EventTrigger>
+              </i:Interaction.Triggers>
+            </Button>
+          </Grid>
+
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="5"/>
+              <RowDefinition Height="64"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions >
+              <ColumnDefinition Width="5"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="1" Grid.Column="1" Width="64" Height="64" BorderThickness="1" BorderBrush="#FF000000" Margin="0,0,15,0">
+              <Image Grid.Row="1" Grid.Column="1" Width="64" Height="64" Source="{Binding SelectedUser.UserPicture}"/>
+            </Border>
+
+            <Label Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Top" Content="{Binding SelectedUser.Username}"
+                   FontWeight="ExtraBold" FontSize="20"/>
+
+            <StackPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom">
+              <Label  Content="{Binding SelectedUser.TotalPoints}" FontWeight="ExtraBold" FontSize="20"/>
+              <Label Content="(" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding UserSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
+              <Label  Content="{Binding SelectedUser.TotalTruePoints}" FontWeight="ExtraBold" FontSize="20"/>
+              <Label Content=")" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding UserSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
+            </StackPanel>
+            <Label Content="Rank:" Grid.Row="2" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Motto:" Grid.Row="3" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Member Since:" Grid.Row="4" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Last Login:" Grid.Row="5" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Contribution:" Grid.Row="6" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Account Type:" Grid.Row="7" Grid.Column="1" FontWeight="Bold"/>
+
+            <Label Content="{Binding SelectedUser.Rank}" Grid.Row="2" Grid.Column="2"/>
+            <Label Content="{Binding SelectedUser.Motto}" Grid.Row="3" Grid.Column="2"  />
+            <Label Content="{Binding SelectedUser.MemberSince}" Grid.Row="4" Grid.Column="2" />
+            <Label Content="{Binding SelectedUser.LastLogin}" Grid.Row="5" Grid.Column="2"/>
+            <StackPanel Grid.Row="6" Grid.Column="2" Orientation="Horizontal">
+              <Label Content="Ach. Count:" Visibility="{Binding UserSeperatorVisible, Converter={StaticResource BoolToVis}}" FontWeight="Bold"/>
+              <Label Content="{Binding SelectedUser.ContribCount}" />
+              <Label Content="Points:" Visibility="{Binding UserSeperatorVisible, Converter={StaticResource BoolToVis}}" FontWeight="Bold"/>
+              <Label Content="{Binding SelectedUser.ContribYield}" />
+            </StackPanel>
+            <Label Content="{Binding SelectedUser.Permissions, Converter={StaticResource PermToString}}" Grid.Row="7" Grid.Column="2"/>
           </Grid>
         </StackPanel>
       </TabItem>
