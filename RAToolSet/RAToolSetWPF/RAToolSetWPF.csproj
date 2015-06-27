@@ -73,40 +73,40 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="PermissionToStringConverter.cs" />
-    <Compile Include="RichPresenceWindow.xaml.cs">
+    <Compile Include="Views\RichPresenceWindow.xaml.cs">
       <DependentUpon>RichPresenceWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User.cs" />
-    <Compile Include="UserViewModel.cs" />
-    <Page Include="LoginWindow.xaml">
+    <Compile Include="Models\User.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Page Include="Views\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainView.xaml">
+    <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Achievement.cs" />
+    <Compile Include="Models\Achievement.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="Condition.cs" />
-    <Compile Include="ConditionViewModel.cs" />
-    <Compile Include="Console.cs" />
+    <Compile Include="Models\Condition.cs" />
+    <Compile Include="ViewModels\ConditionViewModel.cs" />
+    <Compile Include="Models\Console.cs" />
     <Compile Include="Logging.cs" />
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="MainView.xaml.cs">
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RichPresenceWindow.xaml">
+    <Page Include="Views\RichPresenceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,6 +138,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
