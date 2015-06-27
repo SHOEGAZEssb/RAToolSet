@@ -107,7 +107,7 @@ namespace RAToolSetWPF
       }  
       catch(JsonSerializationException ex)
       {
-        _mainViewModel.StatusText = "Error loading user info.";
+        _mainViewModel.StatusText = "Error loading '" + EnteredUsername + "' user info.";
       }
       finally
       {
