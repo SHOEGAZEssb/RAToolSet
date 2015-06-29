@@ -42,6 +42,9 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// Gets/sets wether all infos of this console has been fetched.
+    /// </summary>
     public bool IsFetched
     {
       get { return _isFetched; }

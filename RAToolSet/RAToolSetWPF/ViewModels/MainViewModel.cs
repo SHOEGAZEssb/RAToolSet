@@ -155,12 +155,18 @@ namespace RAToolSetWPF
       private set { _dispatcher = value; }
     }
 
+    /// <summary>
+    /// The ConditionViewModel for the leaderboard maker.
+    /// </summary>
     public ConditionViewModel ConditionViewModel
     {
       get { return _conditionViewModel; }
       private set { _conditionViewModel = value; }
     }
 
+    /// <summary>
+    /// The UserViewModel for the user inspector.
+    /// </summary>
     public UserViewModel UserViewModel
     {
       get { return _userViewModel; }
