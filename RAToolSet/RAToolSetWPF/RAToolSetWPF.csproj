@@ -73,12 +73,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="PermissionToStringConverter.cs" />
-    <Compile Include="Views\RichPresenceWindow.xaml.cs">
-      <DependentUpon>RichPresenceWindow.xaml</DependentUpon>
+    <Compile Include="Views\RichPresenceView.xaml.cs">
+      <DependentUpon>RichPresenceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
-    <Page Include="Views\LoginWindow.xaml">
+    <Page Include="Views\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -96,8 +96,8 @@
     <Compile Include="ViewModels\ConditionViewModel.cs" />
     <Compile Include="Models\Console.cs" />
     <Compile Include="Logging.cs" />
-    <Compile Include="Views\LoginWindow.xaml.cs">
-      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -106,7 +106,7 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\RichPresenceWindow.xaml">
+    <Page Include="Views\RichPresenceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

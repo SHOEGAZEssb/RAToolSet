@@ -7,11 +7,11 @@ using System.Windows.Input;
 namespace RAToolSetWPF
 {
   /// <summary>
-  /// Interaction logic for LoginWindow.xaml
+  /// Interaction logic for LoginView.xaml
   /// </summary>
-  public partial class LoginWindow : Window
+  public partial class LoginView : Window
   {
-    public LoginWindow()
+    public LoginView()
     {
       InitializeComponent();
     }

@@ -15,15 +15,15 @@ using System.Windows.Shapes;
 namespace RAToolSetWPF
 {
   /// <summary>
-  /// Interaction logic for RichPresenceWindow.xaml
+  /// Interaction logic for RichPresenceView.xaml
   /// </summary>
-  public partial class RichPresenceWindow : Window
+  public partial class RichPresenceView : Window
   {
     /// <summary>
     /// Ctor.
     /// </summary>
     /// <param name="richPresence">Rich presence script to show.</param>
-    public RichPresenceWindow(string richPresence)
+    public RichPresenceView(string richPresence)
     {
       InitializeComponent();
       textBlock.Text = richPresence;

@@ -250,7 +250,7 @@ namespace RAToolSetWPF
 
       if (RAToolSetWPF.Properties.Settings.Default.Username == "" || RAToolSetWPF.Properties.Settings.Default.APIKey == "")
       {
-        LoginWindow lw = new LoginWindow();
+        LoginView lw = new LoginView();
         dialogResult = lw.ShowDialog();
       }
 
@@ -326,7 +326,7 @@ namespace RAToolSetWPF
     /// </summary>
     public void RichPresenceClicked()
     {
-      RichPresenceWindow rpw = new RichPresenceWindow(SelectedGame.RichPresencePatch);
+      RichPresenceView rpw = new RichPresenceView(SelectedGame.RichPresencePatch);
       rpw.Show();
     }
 
