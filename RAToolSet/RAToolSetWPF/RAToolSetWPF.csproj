@@ -72,7 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="PermissionToStringConverter.cs" />
+    <Compile Include="Converter\PermissionToStringConverter.cs" />
     <Compile Include="Views\RichPresenceView.xaml.cs">
       <DependentUpon>RichPresenceView.xaml</DependentUpon>
     </Compile>

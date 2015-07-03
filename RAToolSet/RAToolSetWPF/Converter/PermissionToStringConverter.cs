@@ -13,6 +13,11 @@ namespace RAToolSetWPF
   /// </summary>
   class PermissionToStringConverter : IValueConverter
   {
+    /// <summary>
+    /// Converts the given permission id to a string.
+    /// </summary>
+    /// <param name="value">Permission id.</param>
+    /// <returns>Permission string.</returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
       int permission = (int)value;
@@ -38,6 +43,11 @@ namespace RAToolSetWPF
       }
     }
 
+    /// <summary>
+    /// Converts the given string back to a permission id.
+    /// </summary>
+    /// <param name="value">Permission string.</param>
+    /// <returns>Permission id.</returns>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
       string permission = (string)value;
