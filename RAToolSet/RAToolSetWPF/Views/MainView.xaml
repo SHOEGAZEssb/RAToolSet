@@ -82,7 +82,18 @@
           </Border>
 
           <StackPanel Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
-            <Label  Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+            <TextBlock Margin="5,5,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20">
+            <Hyperlink>
+              <TextBlock Text="{Binding SelectedGame.Title}">
+                <i:Interaction.Triggers>
+                  <i:EventTrigger EventName="MouseDown">
+                    <cal:ActionMessage MethodName="GameNameClicked"/>
+                  </i:EventTrigger>
+                </i:Interaction.Triggers>
+              </TextBlock>
+            </Hyperlink>
+          </TextBlock>
+            <!--<Label Content="{Binding SelectedGame.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>-->
             <Label Content="(" Visibility="{Binding GameSeperatorVisible, Converter={StaticResource BoolToVis}}" FontWeight="ExtraBold" FontSize="20"/>
             <Label Content="{Binding AchievementPointSum}" Visibility="{Binding GameSeperatorVisible, Converter={StaticResource BoolToVis}}" 
                    FontWeight="ExtraBold" FontSize="20"/>
@@ -165,7 +176,17 @@
             </Border>
 
             <StackPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
-              <Label Content="{Binding SelectedAchievement.Title}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
+              <TextBlock Margin="5,5,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20">
+              <Hyperlink>
+                <TextBlock Text="{Binding SelectedAchievement.Title}">
+                  <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                      <cal:ActionMessage MethodName="AchievementNameClicked"/>
+                    </i:EventTrigger>
+                  </i:Interaction.Triggers>
+                </TextBlock>
+              </Hyperlink>
+            </TextBlock>
               <Label Content="(" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding AchievementSeperatorVisible, Converter={StaticResource BoolToVis}}"/>
               <Label Content="{Binding SelectedAchievement.Points}" VerticalAlignment="Top" FontWeight="ExtraBold" FontSize="20"/>
               <Label Content=")" FontWeight="ExtraBold" FontSize="20" Visibility="{Binding AchievementSeperatorVisible, Converter={StaticResource BoolToVis}}"/>

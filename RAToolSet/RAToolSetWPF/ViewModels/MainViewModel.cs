@@ -336,6 +336,24 @@ namespace RAToolSetWPF
       rpw.Show();
     }
 
+    /// <summary>
+    /// Opens the game page of the selected game.
+    /// </summary>
+    public void GameNameClicked()
+    {
+      string link = "http://retroachievements.org/Game/" + SelectedGame.ID;
+      Process.Start(link);
+    }
+
+    /// <summary>
+    /// Opens the achievement page of the selected achievement.
+    /// </summary>
+    public void AchievementNameClicked()
+    {
+      string link = "http://retroachievements.org/Achievement/" + SelectedAchievement.ID;
+      Process.Start(link);
+    }
+
     #region BackgroundWorker DoWork Methods
 
     /// <summary>
